@@ -11,5 +11,7 @@ pod 'Firebase'
 pod 'Firebase/Auth'
 pod 'GoogleSignIn'
 pod 'FBSDKLoginKit'
+pod 'Pulsator'
+
 
 end

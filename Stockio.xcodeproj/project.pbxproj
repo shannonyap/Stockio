@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0664A1050EC2BC21BCB3C14B /* Pods_Stockio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 954331E2E3A05F83DC49CA1D /* Pods_Stockio.framework */; };
+		DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */; };
+		DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */; };
+		DACCC4881D31D51B00818B41 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = DACCC4871D31D51B00818B41 /* Fonts */; };
 		DAE3B2351D3197AD008072BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B2341D3197AD008072BF /* AppDelegate.swift */; };
-		DAE3B2371D3197AD008072BF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B2361D3197AD008072BF /* ViewController.swift */; };
+		DAE3B2371D3197AD008072BF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B2361D3197AD008072BF /* LoginViewController.swift */; };
 		DAE3B23A1D3197AD008072BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B2381D3197AD008072BF /* Main.storyboard */; };
 		DAE3B23C1D3197AD008072BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B23B1D3197AD008072BF /* Assets.xcassets */; };
 		DAE3B23F1D3197AD008072BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B23D1D3197AD008072BF /* LaunchScreen.storyboard */; };
@@ -21,9 +24,12 @@
 		341A737A9E7D7B82EABFB807 /* Pods-Stockio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stockio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Stockio/Pods-Stockio.debug.xcconfig"; sourceTree = "<group>"; };
 		37E7FB256EBB51706185B5E7 /* Pods-Stockio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stockio.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stockio/Pods-Stockio.release.xcconfig"; sourceTree = "<group>"; };
 		954331E2E3A05F83DC49CA1D /* Pods_Stockio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stockio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
+		DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
+		DACCC4871D31D51B00818B41 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		DAE3B2311D3197AD008072BF /* Stockio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stockio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE3B2341D3197AD008072BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DAE3B2361D3197AD008072BF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DAE3B2361D3197AD008072BF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DAE3B2391D3197AD008072BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DAE3B23B1D3197AD008072BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DAE3B23E1D3197AD008072BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -85,8 +91,11 @@
 			isa = PBXGroup;
 			children = (
 				DAE3B2341D3197AD008072BF /* AppDelegate.swift */,
-				DAE3B2361D3197AD008072BF /* ViewController.swift */,
+				DAE3B2361D3197AD008072BF /* LoginViewController.swift */,
+				DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */,
+				DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */,
 				DAE3B2381D3197AD008072BF /* Main.storyboard */,
+				DACCC4871D31D51B00818B41 /* Fonts */,
 				DAE3B23B1D3197AD008072BF /* Assets.xcassets */,
 				DAE3B2491D319CAB008072BF /* Images */,
 				DAE3B23D1D3197AD008072BF /* LaunchScreen.storyboard */,
@@ -161,6 +170,7 @@
 				DAE3B24A1D319CAB008072BF /* Images in Resources */,
 				DAE3B23F1D3197AD008072BF /* LaunchScreen.storyboard in Resources */,
 				DAE3B2471D3198EF008072BF /* GoogleService-Info.plist in Resources */,
+				DACCC4881D31D51B00818B41 /* Fonts in Resources */,
 				DAE3B23C1D3197AD008072BF /* Assets.xcassets in Resources */,
 				DAE3B23A1D3197AD008072BF /* Main.storyboard in Resources */,
 			);
@@ -221,7 +231,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DAE3B2371D3197AD008072BF /* ViewController.swift in Sources */,
+				DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */,
+				DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */,
+				DAE3B2371D3197AD008072BF /* LoginViewController.swift in Sources */,
 				DAE3B2351D3197AD008072BF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
