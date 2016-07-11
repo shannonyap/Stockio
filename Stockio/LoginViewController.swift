@@ -34,6 +34,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         self.emailTextField.placeholder = "Email"
         self.emailTextField.contentVerticalAlignment = UIControlContentVerticalAlignment.Bottom
         self.emailTextField.font = UIFont(name: "Geomanist-Regular", size: 16.0)
+        self.emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
         
         let emailBorder = createTextFieldBorders(CGRect(x:  self.emailTextField.frame.origin.x, y: self.emailTextField.frame.origin.y +  self.emailTextField.bounds.size.height * 1.1, width:  self.emailTextField.bounds.size.width, height: 0.75))
         
@@ -42,6 +43,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         self.passwordTextField.font = self.emailTextField.font
         self.passwordTextField.contentVerticalAlignment = self.emailTextField.contentVerticalAlignment
         self.passwordTextField.secureTextEntry = true
+        self.passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
         
         let passwordBorder = createTextFieldBorders(CGRect(x: self.passwordTextField.frame.origin.x, y: self.passwordTextField.frame.origin.y + self.passwordTextField.bounds.size.height * 1.1, width: self.passwordTextField.bounds.size.width, height: 0.75))
         
@@ -77,6 +79,18 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func textFieldDidChange(textField: UITextField) {
+        // Adding a pulse whenever the user clicks on the textField
+        let pulsator = Pulsator()
+        pulsator.frame = CGRect(x: textField.frame.origin.x, y: textField.frame.origin.y + textField.bounds.size.height / 1.25, width: 0, height: 0)
+        pulsator.radius = textField.bounds.size.height / 2
+        pulsator.numPulse = 1
+        pulsator.animationDuration = 0.625
+        pulsator.repeatCount = 0
+        self.view.layer.addSublayer(pulsator)
+        pulsator.start()
     }
     
     func createTopSegment(stockioBackground: UIView) {
