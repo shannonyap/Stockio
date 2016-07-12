@@ -46,7 +46,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
 
         self.emailTextField = FloatLabelTextField(frame: CGRect(x: stockioBackground.bounds.size.width * 0.15, y: stockioBackground.bounds.size.height * 1.05, width: stockioBackground.bounds.size.width * 0.7, height: stockioBackground.bounds.size.height * 0.17))
         self.emailTextField.placeholder = "Email"
-        self.emailTextField.contentVerticalAlignment = UIControlContentVerticalAlignment.Bottom
         self.emailTextField.font = UIFont(name: "Geomanist-Regular", size: 16.0)
         self.emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
         
@@ -55,7 +54,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         self.passwordTextField = FloatLabelTextField(frame: CGRect(x: stockioBackground.bounds.size.width * 0.15, y: stockioBackground.bounds.size.height * 1.275, width: self.emailTextField.bounds.size.width, height: self.emailTextField.bounds.size.height))
         self.passwordTextField.placeholder = "Password"
         self.passwordTextField.font = self.emailTextField.font
-        self.passwordTextField.contentVerticalAlignment = self.emailTextField.contentVerticalAlignment
         self.passwordTextField.secureTextEntry = true
         self.passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
         
@@ -93,6 +91,9 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     
     func isTappedEnd (sender: UIButton) {
         sender.alpha = 1.0
+        if sender.titleLabel?.text == "SIGN UP" {
+            presentViewController(RegistrationViewController(), animated: true, completion: nil)
+        }
     }
     
     func createButtons(customFrame: CGRect, title: String, titleColor: UIColor, backgroundColor: UIColor) -> UIButton {

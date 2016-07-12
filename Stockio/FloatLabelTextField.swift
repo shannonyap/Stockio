@@ -70,7 +70,7 @@ import UIKit
 			}
 		}
 	}
-	
+
 	@IBInspectable var titleActiveTextColour:UIColor! {
 		didSet {
 			if isFirstResponder() {
@@ -145,6 +145,7 @@ import UIKit
 	// MARK:- Private Methods
 	private func setup() {
 		borderStyle = UITextBorderStyle.None
+        self.contentVerticalAlignment = UIControlContentVerticalAlignment.Bottom
 		titleActiveTextColour = tintColor
 		// Set up title label
 		title.alpha = 0.0

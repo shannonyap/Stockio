@@ -3,12 +3,31 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
+        <scene sceneID="rRz-li-vQO">
+            <objects>
+                <viewController id="erD-qD-1cM" customClass="LoginViewController" customModule="Stockio" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ZnP-HT-rx2"/>
+                        <viewControllerLayoutGuide type="bottom" id="k01-GP-tCp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="HRx-BO-quC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3g9-C3-YvC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-30" y="-221"/>
+        </scene>
+        <!--Registration View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="Stockio" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="RegistrationViewController" customModule="Stockio" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,11 +35,36 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sbg-e6-Djc">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="20"/>
+                                <color key="backgroundColor" red="0.97584391711229945" green="0.97584391711229945" blue="0.97584391711229945" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rbC-d7-Wd6">
+                                <rect key="frame" x="558" y="28" width="22" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="22" id="boL-Wf-YfY"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="crossIcons"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rbC-d7-Wd6" firstAttribute="top" secondItem="Sbg-e6-Djc" secondAttribute="bottom" constant="8" symbolic="YES" id="23t-vx-8iC"/>
+                            <constraint firstItem="rbC-d7-Wd6" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="IiF-z5-zXa"/>
+                            <constraint firstItem="Sbg-e6-Djc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Q0P-6r-apm"/>
+                            <constraint firstItem="Sbg-e6-Djc" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="bvl-Rg-vgg"/>
+                            <constraint firstItem="rbC-d7-Wd6" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="kcv-FB-ons"/>
+                            <constraint firstAttribute="trailing" secondItem="Sbg-e6-Djc" secondAttribute="trailing" id="tav-jZ-KHs"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="460" y="286"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="crossIcons" width="22" height="22"/>
+    </resources>
 </document>
