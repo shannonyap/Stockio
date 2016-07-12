@@ -12,6 +12,18 @@ import GoogleSignIn
 import FBSDKLoginKit
 import Pulsator
 
+extension UIViewController {
+    func addTapGesture() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+}
+
 class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
     
     var emailTextField: UITextField = UITextField()
@@ -20,6 +32,8 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        addTapGesture()
         
         GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
@@ -47,11 +61,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         
         let passwordBorder = createTextFieldBorders(CGRect(x: self.passwordTextField.frame.origin.x, y: self.passwordTextField.frame.origin.y + self.passwordTextField.bounds.size.height * 1.1, width: self.passwordTextField.bounds.size.width, height: 0.75))
         
-        let signInButton = UILabel(frame: CGRect(x: emailTextField.frame.origin.x, y: stockioBackground.bounds.size.height * 1.6, width: emailTextField.bounds.size.width, height: self.view.bounds.size.height * 0.065))
-        signInButton.backgroundColor = UIColor(red: 58/255.0, green: 137/255.0, blue: 255/255.0, alpha: 1.0)
-        signInButton.textColor = UIColor.whiteColor()
-        signInButton.textAlignment = NSTextAlignment.Center
-        signInButton.text = "Sign In"
+        let signInButton = createButtons(CGRect(x: emailTextField.frame.origin.x, y: stockioBackground.bounds.size.height * 1.6, width: emailTextField.bounds.size.width, height: self.view.bounds.size.height * 0.065), title: "Sign In", titleColor: UIColor.whiteColor(), backgroundColor: UIColor(red: 58/255.0, green: 137/255.0, blue: 255/255.0, alpha: 1.0))
         
         let fbButton = createSignInButtons(CGRect(x: signInButton.frame.origin.x - signInButton.bounds.size.width * 0.02, y: stockioBackground.bounds.size.height * 1.8, width: signInButton.bounds.size.width * 1.04, height: signInButton.bounds.size.height), buttonImage: UIImage(named: "Images/facebookLogin.png")!, buttonType: "facebook")
         
@@ -61,24 +71,41 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         registrationLabel.text = "NEW TO STOCKIO?"
         registrationLabel.font = UIFont(name: "Aileron-Light", size: 12.0)
         
-        let registrationButton = UIButton(frame: CGRect(x: registrationLabel.frame.origin.x + registrationLabel.bounds.size.width, y: registrationLabel.frame.origin.y, width: registrationLabel.bounds.size.width * 0.7, height: self.view.bounds.size.height * 0.035))
-        registrationButton.setTitle("SIGN UP", forState: UIControlState.Normal)
-        registrationButton.titleLabel!.font = UIFont(name: "Aileron-Regular", size: 12.0)!
-        registrationButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        let registrationButton = createButtons(CGRect(x: registrationLabel.frame.origin.x + registrationLabel.bounds.size.width, y: registrationLabel.frame.origin.y, width: registrationLabel.bounds.size.width * 0.7, height: self.view.bounds.size.height * 0.035), title: "SIGN UP", titleColor: UIColor.blackColor(), backgroundColor: UIColor.clearColor())
+    
         
         self.view.addSubview(stockioBackground)
         self.view.addSubview(self.emailTextField)
         self.view.addSubview(self.passwordTextField)
         self.view.addSubview(emailBorder)
         self.view.addSubview(passwordBorder)
-        self.view.addSubview(signInButton)
         self.view.addSubview(registrationLabel)
-        self.view.addSubview(registrationButton)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func isTapped (sender: UIButton) {
+        sender.alpha = 0.7
+    }
+    
+    func isTappedEnd (sender: UIButton) {
+        sender.alpha = 1.0
+    }
+    
+    func createButtons(customFrame: CGRect, title: String, titleColor: UIColor, backgroundColor: UIColor) -> UIButton {
+        let button = UIButton(frame: customFrame)
+        button.setTitle(title, forState: UIControlState.Normal)
+        button.setTitleColor(titleColor, forState: UIControlState.Normal)
+        button.backgroundColor = backgroundColor
+        button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: customFrame.size.height * 0.625)!
+        button.addTarget(self, action: #selector(isTapped(_:)), forControlEvents: .TouchDown)
+        button.addTarget(self, action: #selector(isTappedEnd(_:)), forControlEvents: .TouchUpInside)
+        self.view.addSubview(button)
+        
+        return button
     }
     
     func textFieldDidChange(textField: UITextField) {
@@ -87,7 +114,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         pulsator.frame = CGRect(x: textField.frame.origin.x, y: textField.frame.origin.y + textField.bounds.size.height / 1.25, width: 0, height: 0)
         pulsator.radius = textField.bounds.size.height / 2
         pulsator.numPulse = 1
-        pulsator.animationDuration = 0.625
+        pulsator.animationDuration = 0.5525
         pulsator.repeatCount = 0
         self.view.layer.addSublayer(pulsator)
         pulsator.start()
