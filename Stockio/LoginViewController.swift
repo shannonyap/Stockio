@@ -12,6 +12,10 @@ import GoogleSignIn
 import FBSDKLoginKit
 import Pulsator
 
+struct Constants {
+    static let firebaseRef = FIRDatabase.database().reference()
+}
+
 extension UIViewController {
     func addTapGesture() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
@@ -83,7 +87,6 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         
         let registrationButton = createButtons(CGRect(x: registrationLabel.frame.origin.x + registrationLabel.bounds.size.width, y: registrationLabel.frame.origin.y, width: registrationLabel.bounds.size.width * 0.7, height: self.view.bounds.size.height * 0.035), title: "SIGN UP", titleColor: UIColor.blackColor(), backgroundColor: UIColor.clearColor())
     
-        
         self.view.addSubview(stockioBackground)
         self.view.addSubview(self.emailTextField)
         self.view.addSubview(self.passwordTextField)
@@ -102,12 +105,15 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         button.setTitle(title, forState: UIControlState.Normal)
         button.setTitleColor(titleColor, forState: UIControlState.Normal)
         button.backgroundColor = backgroundColor
-        button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: customFrame.size.height * 0.45)!
-        if title == "SIGN UP" {
-            button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: 12.0)!
-        }
         button.addTarget(self, action: #selector(isTapped(_:)), forControlEvents: .TouchDown)
-        button.addTarget(self, action: #selector(isTappedEnd(_:)), forControlEvents: .TouchUpInside)
+        if title == "Sign In" {
+            button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: customFrame.size.height * 0.45)!
+            button.addTarget(self, action: #selector(firebaseSignIn(_:)), forControlEvents: .TouchUpInside)
+        } else if title == "SIGN UP" {
+            button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: 12.0)!
+            button.addTarget(self, action: #selector(isTappedEnd(_:)), forControlEvents: .TouchUpInside)
+        }
+
         self.view.addSubview(button)
         
         return button
@@ -165,7 +171,13 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     }
     
     func firebaseSignIn(sender: AnyObject) {
-        
+        FIRAuth.auth()?.signInWithEmail(self.emailTextField.text!, password: self.passwordTextField.text!) { (user, error) in
+            if error != nil {
+                print(error?.localizedDescription)
+            } else {
+                self.performSegueWithIdentifier("SegueToMainVC", sender: nil)
+            }
+        }
     }
     
     func btnFBLoginPressed(sender: AnyObject) {

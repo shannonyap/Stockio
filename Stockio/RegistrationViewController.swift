@@ -80,18 +80,31 @@ class RegistrationViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func animateViewMoving (up:Bool, moveValue :CGFloat){
+        let movementDuration:NSTimeInterval = 0.3
+        let movement:CGFloat = ( up ? -moveValue : moveValue)
+        UIView.beginAnimations( "animateView", context: nil)
+        UIView.setAnimationBeginsFromCurrentState(true)
+        UIView.setAnimationDuration(movementDuration )
+        self.view.frame = CGRectOffset(self.view.frame, 0,  movement)
+        UIView.commitAnimations()
+    }
+    
     func createAccount (sender: UIButton) {
         FIRAuth.auth()?.createUserWithEmail(self.registrationEmailTextField.text!, password: self.registrationPasswordTextField.text!, completion: { (user, error) in
             if error != nil {
                 print(error?.localizedDescription)
             } else {
-                print("The user id is \(user!.uid)")
+                Constants.firebaseRef.child("users").child(user!.uid).setValue(["firstName": self.firstNameTextField.text!, "lastName": self.lastNameTextField.text!])
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         })
     }
     
-    func textFieldDidChange(textField: UITextField) {
+    func textFieldDidBeginEditing(textField: UITextField) {
+        /* pushes the view up to prevent keyboard from blocking the text field. */
+        animateViewMoving(true, moveValue: 100)
+        
         // Adding a pulse whenever the user clicks on the textField
         let pulsator = Pulsator()
         pulsator.frame = CGRect(x: textField.frame.origin.x, y: textField.frame.origin.y + textField.bounds.size.height / 1.25, width: 0, height: 0)
@@ -101,6 +114,10 @@ class RegistrationViewController: UIViewController {
         pulsator.repeatCount = 0
         self.view.layer.addSublayer(pulsator)
         pulsator.start()
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        animateViewMoving(false, moveValue: 100)
     }
     
     func createFloatTextField (floatTextField: FloatLabelTextField, customFrame: CGRect) -> FloatLabelTextField {
@@ -113,7 +130,8 @@ class RegistrationViewController: UIViewController {
     func createCredentialTextField(textField: UITextField, placeholderText: String, font: UIFont) -> UITextField {
         textField.placeholder = placeholderText
         textField.font = font
-        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
+        textField.addTarget(self, action: #selector(textFieldDidBeginEditing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
+        textField.addTarget(self, action: #selector(textFieldDidEndEditing(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         self.view.addSubview(textField)
         
         return textField
