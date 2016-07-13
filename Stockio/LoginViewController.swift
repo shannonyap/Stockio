@@ -22,6 +22,18 @@ extension UIViewController {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
+    
+    func isTapped (sender: UIButton) {
+        sender.alpha = 0.7
+    }
+    
+    func isTappedEnd (sender: UIButton) {
+        sender.alpha = 1.0
+        if sender.titleLabel?.text == "SIGN UP" {
+            performSegueWithIdentifier("signUpSegue", sender: nil)
+        } 
+    }
+    
 }
 
 class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
@@ -85,23 +97,15 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         // Dispose of any resources that can be recreated.
     }
     
-    func isTapped (sender: UIButton) {
-        sender.alpha = 0.7
-    }
-    
-    func isTappedEnd (sender: UIButton) {
-        sender.alpha = 1.0
-        if sender.titleLabel?.text == "SIGN UP" {
-            presentViewController(RegistrationViewController(), animated: true, completion: nil)
-        }
-    }
-    
     func createButtons(customFrame: CGRect, title: String, titleColor: UIColor, backgroundColor: UIColor) -> UIButton {
         let button = UIButton(frame: customFrame)
         button.setTitle(title, forState: UIControlState.Normal)
         button.setTitleColor(titleColor, forState: UIControlState.Normal)
         button.backgroundColor = backgroundColor
-        button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: customFrame.size.height * 0.625)!
+        button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: customFrame.size.height * 0.45)!
+        if title == "SIGN UP" {
+            button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: 12.0)!
+        }
         button.addTarget(self, action: #selector(isTapped(_:)), forControlEvents: .TouchDown)
         button.addTarget(self, action: #selector(isTappedEnd(_:)), forControlEvents: .TouchUpInside)
         self.view.addSubview(button)
