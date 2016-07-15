@@ -38,6 +38,20 @@ extension UIViewController {
         } 
     }
     
+    func isValidEmail(testStr:String) -> Bool {
+        // print("validate calendar: \(testStr)")
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluateWithObject(testStr)
+    }
+    
+    func createAlert (title: String, message: String) {
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
 }
 
 class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
@@ -63,7 +77,8 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         self.emailTextField = FloatLabelTextField(frame: CGRect(x: stockioBackground.bounds.size.width * 0.15, y: stockioBackground.bounds.size.height * 1.05, width: stockioBackground.bounds.size.width * 0.7, height: stockioBackground.bounds.size.height * 0.17))
         self.emailTextField.placeholder = "Email"
         self.emailTextField.font = UIFont(name: "Geomanist-Regular", size: 16.0)
-        self.emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
+        self.emailTextField.addTarget(self, action: #selector(textFieldDidBeginEditing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
+        self.emailTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
         
         let emailBorder = createTextFieldBorders(CGRect(x:  self.emailTextField.frame.origin.x, y: self.emailTextField.frame.origin.y +  self.emailTextField.bounds.size.height * 1.1, width:  self.emailTextField.bounds.size.width, height: 0.75))
         
@@ -71,7 +86,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         self.passwordTextField.placeholder = "Password"
         self.passwordTextField.font = self.emailTextField.font
         self.passwordTextField.secureTextEntry = true
-        self.passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
+        self.passwordTextField.addTarget(self, action: #selector(textFieldDidBeginEditing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
         
         let passwordBorder = createTextFieldBorders(CGRect(x: self.passwordTextField.frame.origin.x, y: self.passwordTextField.frame.origin.y + self.passwordTextField.bounds.size.height * 1.1, width: self.passwordTextField.bounds.size.width, height: 0.75))
         
@@ -119,7 +134,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         return button
     }
     
-    func textFieldDidChange(textField: UITextField) {
+    func textFieldDidBeginEditing(textField: UITextField) {
         // Adding a pulse whenever the user clicks on the textField
         let pulsator = Pulsator()
         pulsator.frame = CGRect(x: textField.frame.origin.x, y: textField.frame.origin.y + textField.bounds.size.height / 1.25, width: 0, height: 0)
@@ -129,6 +144,14 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         pulsator.repeatCount = 0
         self.view.layer.addSublayer(pulsator)
         pulsator.start()
+    }
+    
+    func textFieldDidChange(textField: UITextField) {
+        if textField.text! != "" && !isValidEmail(textField.text!) {
+            textField.textColor = UIColor.redColor()
+        } else {
+            textField.textColor = UIColor.blackColor()
+        }
     }
     
     func createTopSegment(stockioBackground: UIView) {
@@ -170,10 +193,16 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         return border
     }
     
-    func firebaseSignIn(sender: AnyObject) {
+    func firebaseSignIn(sender: UIButton) {
+        sender.alpha = 1.0
         FIRAuth.auth()?.signInWithEmail(self.emailTextField.text!, password: self.passwordTextField.text!) { (user, error) in
             if error != nil {
                 print(error?.localizedDescription)
+                if error!.code == 17999 {
+                    self.createAlert("Error", message: "Invalid username and/or password.")
+                } else if error!.code == 17009 {
+                    self.createAlert("Error", message: "Invalid password.")
+                }
             } else {
                 self.performSegueWithIdentifier("SegueToMainVC", sender: nil)
             }
@@ -188,7 +217,8 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
                     self.getFBUserData()
-                    fbLoginManager.logOut()
+                    self.performSegueWithIdentifier("SegueToMainVC", sender: nil)
+                    //fbLoginManager.logOut()
                 }
             }
         })
@@ -225,7 +255,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
             }
             
             print("User logged in with google")
-                  //  self.presentViewController(ViewController(), animated: true, completion: nil)
+            self.performSegueWithIdentifier("SegueToMainVC", sender: nil)
         })
     }
     

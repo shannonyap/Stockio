@@ -91,14 +91,20 @@ class RegistrationViewController: UIViewController {
     }
     
     func createAccount (sender: UIButton) {
-        FIRAuth.auth()?.createUserWithEmail(self.registrationEmailTextField.text!, password: self.registrationPasswordTextField.text!, completion: { (user, error) in
-            if error != nil {
-                print(error?.localizedDescription)
-            } else {
-                Constants.firebaseRef.child("users").child(user!.uid).setValue(["firstName": self.firstNameTextField.text!, "lastName": self.lastNameTextField.text!])
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        })
+        sender.alpha = 1.0
+        if isValidEmail(self.registrationEmailTextField.text!) && self.registrationPasswordTextField.text! != "" && self.firstNameTextField.text! != "" && self.lastNameTextField.text! != "" {
+            FIRAuth.auth()?.createUserWithEmail(self.registrationEmailTextField.text!, password: self.registrationPasswordTextField.text!, completion: { (user, error) in
+                if error != nil {
+                    print(error?.localizedDescription)
+                } else {
+                    Constants.firebaseRef.child("users").child(user!.uid).setValue(["firstName": self.firstNameTextField.text!, "lastName": self.lastNameTextField.text!])
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+            })
+        } else {
+            /* Error dialog popup. */
+            self.createAlert("Error", message: "Please complete all fields.")
+        }
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -120,6 +126,14 @@ class RegistrationViewController: UIViewController {
         animateViewMoving(false, moveValue: 100)
     }
     
+    func textFieldDidChange (textField: UITextField) {
+        if textField.text! != "" && textField.placeholder == "Email" && !isValidEmail(textField.text!) {
+            textField.textColor = UIColor.redColor()
+        } else {
+            textField.textColor = UIColor.blackColor()
+        }
+    }
+    
     func createFloatTextField (floatTextField: FloatLabelTextField, customFrame: CGRect) -> FloatLabelTextField {
         let floatTextField = FloatLabelTextField(frame: customFrame)
         floatTextField.titleActiveTextColour = UIColor.blackColor()
@@ -132,6 +146,9 @@ class RegistrationViewController: UIViewController {
         textField.font = font
         textField.addTarget(self, action: #selector(textFieldDidBeginEditing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
         textField.addTarget(self, action: #selector(textFieldDidEndEditing(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
+        if textField.placeholder == "Email" {
+            textField.addTarget(self, action: #selector(textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        }
         self.view.addSubview(textField)
         
         return textField
