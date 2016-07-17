@@ -9,6 +9,7 @@ target 'Stockio' do
 
 pod 'Firebase'
 pod 'Firebase/Auth'
+pod 'Firebase/Database'
 pod 'GoogleSignIn'
 pod 'FBSDKLoginKit'
 pod 'Pulsator'

@@ -100,6 +100,17 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
                 if error != nil {
                     print(error?.localizedDescription)
                 } else {
+                    /* encoding the profile picture into a base-64 string to be stored in our DB */
+                    let imageData:NSData = UIImagePNGRepresentation(self.cameraIcon.image!)!
+                    let profilePic = Constants.storageRef.child("users").child(user!.uid).putData(imageData, metadata: nil, completion: { (metadata, error) in
+                        if (error != nil) {
+                            // Uh-oh, an error occurred!
+                        } else {
+                            // Metadata contains file metadata such as size, content-type, and download URL.
+                            let downloadURL = metadata!.downloadURL
+                        }
+                    })
+                    
                     Constants.firebaseRef.child("users").child(user!.uid).setValue(["firstName": self.firstNameTextField.text!, "lastName": self.lastNameTextField.text!])
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }

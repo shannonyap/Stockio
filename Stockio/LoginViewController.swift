@@ -14,6 +14,7 @@ import Pulsator
 
 struct Constants {
     static let firebaseRef = FIRDatabase.database().reference()
+    static let storageRef = FIRStorage.storage().referenceForURL("gs://project-86651569238173865.appspot.com")
 }
 
 extension UIViewController {
