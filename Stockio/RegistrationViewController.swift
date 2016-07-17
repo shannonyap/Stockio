@@ -10,12 +10,14 @@ import UIKit
 import Pulsator
 import Firebase
 
-class RegistrationViewController: UIViewController {
+class RegistrationViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     var firstNameTextField = UITextField()
     var lastNameTextField = UITextField()
     var registrationEmailTextField = UITextField()
     var registrationPasswordTextField = UITextField()
+    var cameraIcon = UIImageView()
+    let imagePicker = UIImagePickerController()
     
     @IBAction func exitToLoginVC(sender: AnyObject) {
         (sender as! UIButton).alpha = 1.0
@@ -31,6 +33,7 @@ class RegistrationViewController: UIViewController {
         // Do any additional setup after loading the view.
         addTapGesture()
         createAddPhotoIcon()
+        imagePicker.delegate = self
         
         self.view.backgroundColor = UIColor.whiteColor()
         
@@ -172,12 +175,40 @@ class RegistrationViewController: UIViewController {
         shapeLayer.lineWidth = 2.0
         view.layer.addSublayer(shapeLayer)
         
-        let cameraIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width * 0.15, height: self.view.bounds.size.width * 0.15))
-        cameraIcon.image = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("camera", ofType: "png", inDirectory: "Images")!)
-        cameraIcon.center = CGPoint(x: self.view.bounds.size.width / 2, y: self.view.bounds.size.height / 3.75)
-        self.view.addSubview(cameraIcon)
+        self.cameraIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width * 0.15, height: self.view.bounds.size.width * 0.15))
+        self.cameraIcon.image = UIImage(contentsOfFile: NSBundle.mainBundle().pathForResource("camera", ofType: "png", inDirectory: "Images")!)
+        self.cameraIcon.center = CGPoint(x: self.view.bounds.size.width / 2, y: self.view.bounds.size.height / 3.75)
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(RegistrationViewController.imageTapped(_:)))
+        self.cameraIcon.userInteractionEnabled = true
+        self.cameraIcon.addGestureRecognizer(tapGestureRecognizer)
+        self.view.addSubview(self.cameraIcon)
         
     }
+    
+    func imageTapped(sender: UIImageView) {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .PhotoLibrary
+        
+        presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            self.cameraIcon.contentMode = .ScaleAspectFill
+            self.cameraIcon.image = pickedImage
+            self.cameraIcon.bounds.size = CGSize(width: self.view.bounds.size.width / 3, height: self.view.bounds.size.width / 3)
+            self.cameraIcon.layer.cornerRadius = self.view.bounds.size.width / 6
+            self.cameraIcon.clipsToBounds = true
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
     /*
     // MARK: - Navigation
 
