@@ -5,6 +5,12 @@ PODS:
   - Bolts/AppLinks (1.7.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.7.0)
+  - DrawerController (1.1.0):
+    - DrawerController/Core (= 1.1.0)
+    - DrawerController/DrawerVisualStates (= 1.1.0)
+  - DrawerController/Core (1.1.0)
+  - DrawerController/DrawerVisualStates (1.1.0):
+    - DrawerController/Core
   - FBSDKCoreKit (4.11.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.11.0):
@@ -59,6 +65,7 @@ PODS:
   - Pulsator (0.1.0)
 
 DEPENDENCIES:
+  - DrawerController
   - FBSDKLoginKit
   - Firebase
   - Firebase/Auth
@@ -69,6 +76,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  DrawerController: 8fd56e6238399a08c4af054fbea0ef8669cd81f3
   FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
   FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
   Firebase: 6d4012da1598732a2b43f16d8355eca90f94ed59
@@ -86,6 +94,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   Pulsator: da87aa289b30b5e0cc7e03b21d9f2cb58277f601
 
-PODFILE CHECKSUM: 1ae172245ca038935977b696a53b4f798bebf851
+PODFILE CHECKSUM: 55c267b7e877b04a7a5865ddfd0ca40f9e116354
 
 COCOAPODS: 1.0.0

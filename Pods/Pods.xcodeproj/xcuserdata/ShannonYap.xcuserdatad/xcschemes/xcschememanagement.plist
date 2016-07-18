@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>DrawerController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>FBSDKCoreKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,7 +42,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2C0089236CA4A7D1A2017FBFB4FBB626</key>
+		<key>33CD55B2B3D2CA157136D71484EA6536</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,7 +57,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F6442563E0CA4C8E195E774771240B33</key>
+		<key>D083682CF36071495A66680CF5CE2BA5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F4612DCD020C732FEC020D1241BF67E4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

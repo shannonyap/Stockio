@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0664A1050EC2BC21BCB3C14B /* Pods_Stockio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 954331E2E3A05F83DC49CA1D /* Pods_Stockio.framework */; };
+		DA02FAA81D3C3F1E002ED1E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B2381D3197AD008072BF /* Main.storyboard */; };
+		DA04C11F1D3C47C60001818B /* SliderMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA04C11E1D3C47C60001818B /* SliderMenuViewController.swift */; };
 		DA3156CF1D3610B800144C74 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3156CE1D3610B800144C74 /* MainViewController.swift */; };
 		DA553AC11D3488D600CA2F80 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */; };
 		DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */; };
@@ -15,7 +17,6 @@
 		DACCC4881D31D51B00818B41 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = DACCC4871D31D51B00818B41 /* Fonts */; };
 		DAE3B2351D3197AD008072BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B2341D3197AD008072BF /* AppDelegate.swift */; };
 		DAE3B2371D3197AD008072BF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B2361D3197AD008072BF /* LoginViewController.swift */; };
-		DAE3B23A1D3197AD008072BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B2381D3197AD008072BF /* Main.storyboard */; };
 		DAE3B23C1D3197AD008072BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B23B1D3197AD008072BF /* Assets.xcassets */; };
 		DAE3B23F1D3197AD008072BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B23D1D3197AD008072BF /* LaunchScreen.storyboard */; };
 		DAE3B2471D3198EF008072BF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B2461D3198EF008072BF /* GoogleService-Info.plist */; };
@@ -26,6 +27,7 @@
 		341A737A9E7D7B82EABFB807 /* Pods-Stockio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stockio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Stockio/Pods-Stockio.debug.xcconfig"; sourceTree = "<group>"; };
 		37E7FB256EBB51706185B5E7 /* Pods-Stockio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stockio.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stockio/Pods-Stockio.release.xcconfig"; sourceTree = "<group>"; };
 		954331E2E3A05F83DC49CA1D /* Pods_Stockio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stockio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA04C11E1D3C47C60001818B /* SliderMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderMenuViewController.swift; sourceTree = "<group>"; };
 		DA3156CE1D3610B800144C74 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			children = (
 				DAE3B2341D3197AD008072BF /* AppDelegate.swift */,
 				DAE3B2361D3197AD008072BF /* LoginViewController.swift */,
+				DA04C11E1D3C47C60001818B /* SliderMenuViewController.swift */,
 				DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */,
 				DA3156CE1D3610B800144C74 /* MainViewController.swift */,
 				DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */,
@@ -173,12 +176,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA02FAA81D3C3F1E002ED1E0 /* Main.storyboard in Resources */,
 				DAE3B24A1D319CAB008072BF /* Images in Resources */,
 				DAE3B23F1D3197AD008072BF /* LaunchScreen.storyboard in Resources */,
 				DAE3B2471D3198EF008072BF /* GoogleService-Info.plist in Resources */,
 				DACCC4881D31D51B00818B41 /* Fonts in Resources */,
 				DAE3B23C1D3197AD008072BF /* Assets.xcassets in Resources */,
-				DAE3B23A1D3197AD008072BF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +240,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA04C11F1D3C47C60001818B /* SliderMenuViewController.swift in Sources */,
 				DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */,
 				DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */,
 				DAE3B2371D3197AD008072BF /* LoginViewController.swift in Sources */,

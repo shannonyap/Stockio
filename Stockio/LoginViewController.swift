@@ -11,6 +11,7 @@ import Firebase
 import GoogleSignIn
 import FBSDKLoginKit
 import Pulsator
+import DrawerController
 
 struct Constants {
     static let firebaseRef = FIRDatabase.database().reference()
@@ -205,7 +206,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
                     self.createAlert("Error", message: "Invalid password.")
                 }
             } else {
-                self.performSegueWithIdentifier("SegueToMainVC", sender: nil)
+                self.setUpSliderMenuVC()
             }
         }
     }
@@ -218,7 +219,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
                     self.getFBUserData()
-                    self.performSegueWithIdentifier("SegueToMainVC", sender: nil)
+                    self.setUpSliderMenuVC()
                     //fbLoginManager.logOut()
                 }
             }
@@ -256,7 +257,8 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
             }
             
             print("User logged in with google")
-            self.performSegueWithIdentifier("SegueToMainVC", sender: nil)
+            
+            self.setUpSliderMenuVC()
         })
     }
     
@@ -267,6 +269,18 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         }
         
         try! FIRAuth.auth()!.signOut()
+    }
+    
+    func setUpSliderMenuVC() {
+        let centerNav = UINavigationController(rootViewController: MainViewController())
+        centerNav.navigationBar.barTintColor = UIColor.whiteColor()
+  
+        let drawerVC = DrawerController(centerViewController: centerNav, leftDrawerViewController: SliderMenuViewController())
+        drawerVC.closeDrawerGestureModeMask = CloseDrawerGestureMode.All
+        drawerVC.openDrawerGestureModeMask = OpenDrawerGestureMode.All
+        drawerVC.setMaximumLeftDrawerWidth(self.view.bounds.size.width * 0.6, animated: true, completion: nil)
+        
+        self.presentViewController(drawerVC, animated: true, completion: nil)
     }
 
 }
