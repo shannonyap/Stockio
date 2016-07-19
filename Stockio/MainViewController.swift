@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
         
         let leftButton = DrawerBarButtonItem(target: self, action: #selector(leftDrawerButtonPress(_:)), menuIconColor: UIColor.blackColor())
         self.navigationItem.setLeftBarButtonItem(leftButton, animated: true)
-        
+        self.navigationController?.navigationBar.topItem!.title = "Watchlist"
         // Do any additional setup after loading the view.
     }
 

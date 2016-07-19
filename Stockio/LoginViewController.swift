@@ -274,11 +274,14 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     func setUpSliderMenuVC() {
         let centerNav = UINavigationController(rootViewController: MainViewController())
         centerNav.navigationBar.barTintColor = UIColor.whiteColor()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let sliderMenuVC = storyboard.instantiateViewControllerWithIdentifier("sliderMenu") as! SliderMenuController
   
-        let drawerVC = DrawerController(centerViewController: centerNav, leftDrawerViewController: SliderMenuViewController())
+        let drawerVC = DrawerController(centerViewController: centerNav, leftDrawerViewController: sliderMenuVC)
         drawerVC.closeDrawerGestureModeMask = CloseDrawerGestureMode.All
         drawerVC.openDrawerGestureModeMask = OpenDrawerGestureMode.All
-        drawerVC.setMaximumLeftDrawerWidth(self.view.bounds.size.width * 0.6, animated: true, completion: nil)
+        drawerVC.setMaximumLeftDrawerWidth(self.view.bounds.size.width * 0.81, animated: true, completion: nil)
         
         self.presentViewController(drawerVC, animated: true, completion: nil)
     }
