@@ -11,6 +11,7 @@
 		DA02FAA81D3C3F1E002ED1E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B2381D3197AD008072BF /* Main.storyboard */; };
 		DA3156CF1D3610B800144C74 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3156CE1D3610B800144C74 /* MainViewController.swift */; };
 		DA553AC11D3488D600CA2F80 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */; };
+		DA58E7231D40959400E6135F /* DailyDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */; };
 		DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */; };
 		DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */; };
 		DACCC4881D31D51B00818B41 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = DACCC4871D31D51B00818B41 /* Fonts */; };
@@ -29,6 +30,7 @@
 		954331E2E3A05F83DC49CA1D /* Pods_Stockio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stockio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA3156CE1D3610B800144C74 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyDashboardViewController.swift; sourceTree = "<group>"; };
 		DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		DACCC4871D31D51B00818B41 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				DAE3B2361D3197AD008072BF /* LoginViewController.swift */,
 				DAE027781D3DD49500F952FE /* SliderMenuViewController.swift */,
 				DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */,
+				DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */,
 				DA3156CE1D3610B800144C74 /* MainViewController.swift */,
 				DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */,
 				DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */,
@@ -243,6 +246,7 @@
 				DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */,
 				DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */,
 				DAE027791D3DD49500F952FE /* SliderMenuViewController.swift in Sources */,
+				DA58E7231D40959400E6135F /* DailyDashboardViewController.swift in Sources */,
 				DAE3B2371D3197AD008072BF /* LoginViewController.swift in Sources */,
 				DA3156CF1D3610B800144C74 /* MainViewController.swift in Sources */,
 				DAE3B2351D3197AD008072BF /* AppDelegate.swift in Sources */,

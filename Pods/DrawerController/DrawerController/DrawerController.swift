@@ -123,7 +123,7 @@ private let DrawerDefaultBounceDistance: CGFloat = 50.0
 
 private let DrawerMinimumAnimationDuration: CGFloat = 0.15
 private let DrawerDefaultDampingFactor: CGFloat = 1.0
-private let DrawerDefaultShadowRadius: CGFloat = 10.0
+private let DrawerDefaultShadowRadius: CGFloat = 0.75
 private let DrawerDefaultShadowOpacity: Float = 0.8
 
 private let DrawerPanVelocityXAnimationThreshold: CGFloat = 200.0

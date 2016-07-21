@@ -42,6 +42,39 @@
             </objects>
             <point key="canvasLocation" x="-859" y="-461"/>
         </scene>
+        <!--Main View Controller-->
+        <scene sceneID="dNh-Vs-1qq">
+            <objects>
+                <viewController storyboardIdentifier="mainVC" id="6H7-yO-LlB" customClass="MainViewController" customModule="Stockio" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nYf-1t-dPK"/>
+                        <viewControllerLayoutGuide type="bottom" id="wxQ-Ns-rAG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lY6-3n-fvO">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="U8T-hB-H53">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="U8T-hB-H53" firstAttribute="leading" secondItem="lY6-3n-fvO" secondAttribute="leading" id="2yP-mj-Udx"/>
+                            <constraint firstAttribute="trailing" secondItem="U8T-hB-H53" secondAttribute="trailing" id="enK-jU-kgQ"/>
+                            <constraint firstItem="U8T-hB-H53" firstAttribute="bottom" secondItem="wxQ-Ns-rAG" secondAttribute="top" id="oBo-gd-gu0"/>
+                            <constraint firstItem="U8T-hB-H53" firstAttribute="top" secondItem="lY6-3n-fvO" secondAttribute="top" id="uTH-ie-FeY"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="U8T-hB-H53" id="OB7-PO-imE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bj5-dd-bRA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="78" y="-791"/>
+        </scene>
         <!--Login View Controller-->
         <scene sceneID="rRz-li-vQO">
             <objects>
@@ -104,7 +137,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="460" y="286"/>
+            <point key="canvasLocation" x="-166" y="180"/>
+        </scene>
+        <!--Daily Dashboard View Controller-->
+        <scene sceneID="MGu-Jz-bCV">
+            <objects>
+                <viewController storyboardIdentifier="dailyDashboardVC" id="Z9m-t5-yVa" customClass="DailyDashboardViewController" customModule="Stockio" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="28k-ED-q0Z"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cnj-Cg-cJq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8oL-qP-J1R">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Uj-lg-6Gb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1188" y="74"/>
         </scene>
     </scenes>
     <resources>

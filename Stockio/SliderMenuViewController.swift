@@ -11,13 +11,13 @@ import UIKit
 class SliderMenuViewController: UITableViewController {
     
     var uid: String = ""
+    let slideMenuTabs: Array = ["Watchlist", "Daily Dashboard", "Sign Out"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.tableView.tableFooterView = UIView()
-        self.tableView.layoutMargins = UIEdgeInsetsZero
-        self.tableView.separatorInset = UIEdgeInsetsZero
+        self.tableView.separatorStyle = .None
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -45,7 +45,6 @@ class SliderMenuViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
-        cell.layoutMargins = UIEdgeInsetsZero
         if indexPath.row == 0 {
             cell = tableView.dequeueReusableCellWithIdentifier("profileBar", forIndexPath: indexPath)
             var profPic = UIImageView(frame: CGRect(x: self.view.bounds.size.width * 0.30375, y: cell.bounds.size.height / 2 - self.view.bounds.size.width * 0.2025, width: self.view.bounds.size.width * 0.405, height: self.view.bounds.size.width * 0.405))
@@ -73,8 +72,14 @@ class SliderMenuViewController: UITableViewController {
             })
         } else {
             cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+            cell.textLabel?.font = UIFont(name: "EncodeSans-Light", size: 12.0)
+            cell.textLabel?.text = slideMenuTabs[indexPath.row - 1]
             cell.bounds.size.height = 40.0
         }
+        
+        let customSeparator = UIView(frame: CGRect(x: 0, y: cell.bounds.size.height - 1, width: self.tableView.bounds.size.width, height: 0.5))
+        customSeparator.backgroundColor = UIColor.grayColor()
+        cell.addSubview(customSeparator)
         
         return cell
     }
@@ -88,7 +93,24 @@ class SliderMenuViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-      
+        let title = self.evo_drawerController?.centerViewController?.childViewControllers.first?.navigationItem.title
+        if indexPath.row == 1 {
+            if title == "Watchlist" {
+                self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
+            } else {
+                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("mainVC")), withFullCloseAnimation: true, completion: nil)
+            }
+        } else if indexPath.row == 2 {
+            if title == "Daily Dashboard" {
+                self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
+            } else {
+                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("dailyDashboardVC")), withFullCloseAnimation: true, completion: nil)
+            }
+        } else if indexPath.row == tableView.numberOfRowsInSection(0) - 1 {
+            self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: { (true) in
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
+        }
     }
 
     override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {

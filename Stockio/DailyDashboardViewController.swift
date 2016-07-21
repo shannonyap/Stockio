@@ -1,30 +1,26 @@
 //
-//  MainViewController.swift
+//  DailyDashboardViewController.swift
 //  Stockio
 //
-//  Created by Shannon Yap on 7/13/16.
+//  Created by Shannon Yap on 7/21/16.
 //  Copyright © 2016 SYXH. All rights reserved.
 //
 
 import UIKit
-import DrawerController
 
-class MainViewController: UIViewController, UITableViewDelegate {
-    
-    @IBOutlet weak var tableView: UITableView!
-    
+class DailyDashboardViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.delegate = self
-        
-        initVCWithNavBarPresets("Watchlist")
         // Do any additional setup after loading the view.
+        initVCWithNavBarPresets("Daily Dashboard")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
     /*
     // MARK: - Navigation

@@ -68,6 +68,21 @@ extension UIViewController {
         
         return shapeLayer
     }
+    
+    func leftDrawerButtonPress (sender: UIBarButtonItem) {
+        self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
+    }
+    
+    func initVCWithNavBarPresets(title: String) {
+        self.view.backgroundColor = UIColor.whiteColor()
+        let leftButton = DrawerBarButtonItem(target: self, action: #selector(leftDrawerButtonPress(_:)), menuIconColor: UIColor.blackColor())
+        self.navigationItem.setLeftBarButtonItem(leftButton, animated: true)
+        self.navigationController?.navigationBar.topItem!.title = title
+
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.blackColor(),
+                                                                        NSFontAttributeName: UIFont(name: "EncodeSans-Light", size: 17)!]
+        self.navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
+    }
 }
 
 class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
@@ -285,10 +300,11 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     }
     
     func setUpSliderMenuVC(uid: String) {
-        let centerNav = UINavigationController(rootViewController: MainViewController())
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let centerNav = UINavigationController(rootViewController: storyboard.instantiateViewControllerWithIdentifier("mainVC") as! MainViewController)
         centerNav.navigationBar.barTintColor = UIColor.whiteColor()
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let sliderMenuVC = storyboard.instantiateViewControllerWithIdentifier("sliderMenu") as! SliderMenuViewController
         sliderMenuVC.uid = uid
   
