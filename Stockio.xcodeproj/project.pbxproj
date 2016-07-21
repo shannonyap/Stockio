@@ -14,7 +14,7 @@
 		DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */; };
 		DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */; };
 		DACCC4881D31D51B00818B41 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = DACCC4871D31D51B00818B41 /* Fonts */; };
-		DAE027791D3DD49500F952FE /* SliderMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE027781D3DD49500F952FE /* SliderMenuController.swift */; };
+		DAE027791D3DD49500F952FE /* SliderMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE027781D3DD49500F952FE /* SliderMenuViewController.swift */; };
 		DAE3B2351D3197AD008072BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B2341D3197AD008072BF /* AppDelegate.swift */; };
 		DAE3B2371D3197AD008072BF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE3B2361D3197AD008072BF /* LoginViewController.swift */; };
 		DAE3B23C1D3197AD008072BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B23B1D3197AD008072BF /* Assets.xcassets */; };
@@ -32,7 +32,7 @@
 		DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		DACCC4871D31D51B00818B41 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
-		DAE027781D3DD49500F952FE /* SliderMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderMenuController.swift; sourceTree = "<group>"; };
+		DAE027781D3DD49500F952FE /* SliderMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderMenuViewController.swift; sourceTree = "<group>"; };
 		DAE3B2311D3197AD008072BF /* Stockio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stockio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE3B2341D3197AD008072BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DAE3B2361D3197AD008072BF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 			children = (
 				DAE3B2341D3197AD008072BF /* AppDelegate.swift */,
 				DAE3B2361D3197AD008072BF /* LoginViewController.swift */,
-				DAE027781D3DD49500F952FE /* SliderMenuController.swift */,
+				DAE027781D3DD49500F952FE /* SliderMenuViewController.swift */,
 				DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */,
 				DA3156CE1D3610B800144C74 /* MainViewController.swift */,
 				DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */,
@@ -242,7 +242,7 @@
 			files = (
 				DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */,
 				DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */,
-				DAE027791D3DD49500F952FE /* SliderMenuController.swift in Sources */,
+				DAE027791D3DD49500F952FE /* SliderMenuViewController.swift in Sources */,
 				DAE3B2371D3197AD008072BF /* LoginViewController.swift in Sources */,
 				DA3156CF1D3610B800144C74 /* MainViewController.swift in Sources */,
 				DAE3B2351D3197AD008072BF /* AppDelegate.swift in Sources */,

@@ -8,8 +8,10 @@
 
 import UIKit
 
-class SliderMenuController: UITableViewController {
-
+class SliderMenuViewController: UITableViewController {
+    
+    var uid: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,20 +48,29 @@ class SliderMenuController: UITableViewController {
         cell.layoutMargins = UIEdgeInsetsZero
         if indexPath.row == 0 {
             cell = tableView.dequeueReusableCellWithIdentifier("profileBar", forIndexPath: indexPath)
-            let profPic = UIImageView(frame: CGRect(x: self.view.bounds.size.width * 0.30375, y: cell.bounds.size.height / 2 - self.view.bounds.size.width * 0.2025, width: self.view.bounds.size.width * 0.405, height: self.view.bounds.size.width * 0.405))
+            var profPic = UIImageView(frame: CGRect(x: self.view.bounds.size.width * 0.30375, y: cell.bounds.size.height / 2 - self.view.bounds.size.width * 0.2025, width: self.view.bounds.size.width * 0.405, height: self.view.bounds.size.width * 0.405))
             profPic.layer.cornerRadius = profPic.bounds.size.height / 2
             cell.addSubview(profPic)
             
-            let circlePath = UIBezierPath(arcCenter: CGPoint(x: self.view.bounds.size.width * 0.51,y: cell.bounds.size.height / 2), radius: profPic.bounds.size.height / 2, startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
-            let shapeLayer = CAShapeLayer()
-            shapeLayer.path = circlePath.CGPath
-            //change the fill color
-            shapeLayer.fillColor = UIColor.clearColor().CGColor
-            //you can change the stroke color
-            shapeLayer.strokeColor = UIColor.blackColor().CGColor
-            //you can change the line width
-            shapeLayer.lineWidth = 2.0
+            let defaultUserImage = UIImageView(image: UIImage(named: "Images/user.png"))
+            defaultUserImage.center = profPic.center
+            defaultUserImage.bounds.size = CGSize(width: profPic.bounds.size.width * 0.5, height: profPic.bounds.size.height * 0.5)
+            cell.addSubview(defaultUserImage)
+            
+            let shapeLayer = drawCircle(CGPoint(x: self.view.bounds.size.width * 0.51,y: cell.bounds.size.height / 2), radius: profPic.bounds.size.height / 2)
             cell.layer.addSublayer(shapeLayer)
+
+            Constants.storageRef.child("users").child(uid).dataWithMaxSize(20 * 1024 * 1024, completion: { (data, error) in
+                if error != nil {
+                    print(error?.localizedDescription)
+                } else {
+                    profPic = UIImageView(image: UIImage(data: data!, scale: 1.0))
+                    profPic.frame = CGRect(x: self.view.bounds.size.width * 0.3075, y: cell.bounds.size.height / 2 - self.view.bounds.size.width * 0.2025, width: self.view.bounds.size.width * 0.405, height: self.view.bounds.size.width * 0.405)
+                    profPic.layer.cornerRadius = profPic.bounds.size.height / 2
+                    profPic.layer.masksToBounds = true
+                    cell.addSubview(profPic)
+                }
+            })
         } else {
             cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
             cell.bounds.size.height = 40.0
@@ -75,7 +86,17 @@ class SliderMenuController: UITableViewController {
         
         return 40
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+      
+    }
 
+    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if indexPath.row == 0 {
+            return false
+        }
+        return true
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

@@ -54,6 +54,20 @@ extension UIViewController {
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
         self.presentViewController(alertController, animated: true, completion: nil)
     }
+    
+    func drawCircle(arcCenter: CGPoint, radius: CGFloat) -> CAShapeLayer {
+        let circlePath = UIBezierPath(arcCenter: arcCenter, radius: radius, startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.CGPath
+        //change the fill color
+        shapeLayer.fillColor = UIColor.clearColor().CGColor
+        //you can change the stroke color
+        shapeLayer.strokeColor = UIColor.blackColor().CGColor
+        //you can change the line width
+        shapeLayer.lineWidth = 2.0
+        
+        return shapeLayer
+    }
 }
 
 class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
@@ -94,15 +108,15 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         
         let signInButton = createButtons(CGRect(x: emailTextField.frame.origin.x, y: stockioBackground.bounds.size.height * 1.6, width: emailTextField.bounds.size.width, height: self.view.bounds.size.height * 0.065), title: "Sign In", titleColor: UIColor.whiteColor(), backgroundColor: UIColor(red: 58/255.0, green: 137/255.0, blue: 255/255.0, alpha: 1.0))
         
-        let fbButton = createSignInButtons(CGRect(x: signInButton.frame.origin.x - signInButton.bounds.size.width * 0.02, y: stockioBackground.bounds.size.height * 1.8, width: signInButton.bounds.size.width * 1.04, height: signInButton.bounds.size.height), buttonImage: UIImage(named: "Images/facebookLogin.png")!, buttonType: "facebook")
+        createSignInButtons(CGRect(x: signInButton.frame.origin.x - signInButton.bounds.size.width * 0.02, y: stockioBackground.bounds.size.height * 1.8, width: signInButton.bounds.size.width * 1.04, height: signInButton.bounds.size.height), buttonImage: UIImage(named: "Images/facebookLogin.png")!, buttonType: "facebook")
         
-        let googleButton = createSignInButtons(CGRect(x: signInButton.frame.origin.x - signInButton.bounds.size.width * 0.02, y: stockioBackground.bounds.size.height * 2, width: signInButton.bounds.size.width * 1.04, height: signInButton.bounds.size.height), buttonImage: UIImage(named: "Images/googleSignIn.png")!, buttonType: "google")
+        createSignInButtons(CGRect(x: signInButton.frame.origin.x - signInButton.bounds.size.width * 0.02, y: stockioBackground.bounds.size.height * 2, width: signInButton.bounds.size.width * 1.04, height: signInButton.bounds.size.height), buttonImage: UIImage(named: "Images/googleSignIn.png")!, buttonType: "google")
         
         let registrationLabel = UILabel(frame: CGRect(x: emailTextField.frame.origin.x + emailTextField.bounds.size.width * 0.1, y: stockioBackground.bounds.size.height * 2.275, width: emailTextField.bounds.size.width * 0.5, height: self.view.bounds.size.height * 0.035))
         registrationLabel.text = "NEW TO STOCKIO?"
         registrationLabel.font = UIFont(name: "Aileron-Light", size: 12.0)
         
-        let registrationButton = createButtons(CGRect(x: registrationLabel.frame.origin.x + registrationLabel.bounds.size.width, y: registrationLabel.frame.origin.y, width: registrationLabel.bounds.size.width * 0.7, height: self.view.bounds.size.height * 0.035), title: "SIGN UP", titleColor: UIColor.blackColor(), backgroundColor: UIColor.clearColor())
+        createButtons(CGRect(x: registrationLabel.frame.origin.x + registrationLabel.bounds.size.width, y: registrationLabel.frame.origin.y, width: registrationLabel.bounds.size.width * 0.7, height: self.view.bounds.size.height * 0.035), title: "SIGN UP", titleColor: UIColor.blackColor(), backgroundColor: UIColor.clearColor())
     
         self.view.addSubview(stockioBackground)
         self.view.addSubview(self.emailTextField)
@@ -206,20 +220,19 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
                     self.createAlert("Error", message: "Invalid password.")
                 }
             } else {
-                self.setUpSliderMenuVC()
+                self.setUpSliderMenuVC(user!.uid)
             }
         }
     }
     
     func btnFBLoginPressed(sender: AnyObject) {
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
-        fbLoginManager .logInWithReadPermissions(["email"], handler: { (result, error) -> Void in
+        fbLoginManager .logInWithReadPermissions(["email"], fromViewController: self, handler: { (result, error) -> Void in
             if (error == nil){
                 let fbloginresult : FBSDKLoginManagerLoginResult = result
-                if(fbloginresult.grantedPermissions.contains("email"))
-                {
+                if(fbloginresult.grantedPermissions.contains("email")) {
                     self.getFBUserData()
-                    self.setUpSliderMenuVC()
+                    self.setUpSliderMenuVC("")
                     //fbLoginManager.logOut()
                 }
             }
@@ -258,7 +271,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
             
             print("User logged in with google")
             
-            self.setUpSliderMenuVC()
+            self.setUpSliderMenuVC(user!.uid)
         })
     }
     
@@ -271,12 +284,13 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         try! FIRAuth.auth()!.signOut()
     }
     
-    func setUpSliderMenuVC() {
+    func setUpSliderMenuVC(uid: String) {
         let centerNav = UINavigationController(rootViewController: MainViewController())
         centerNav.navigationBar.barTintColor = UIColor.whiteColor()
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let sliderMenuVC = storyboard.instantiateViewControllerWithIdentifier("sliderMenu") as! SliderMenuController
+        let sliderMenuVC = storyboard.instantiateViewControllerWithIdentifier("sliderMenu") as! SliderMenuViewController
+        sliderMenuVC.uid = uid
   
         let drawerVC = DrawerController(centerViewController: centerNav, leftDrawerViewController: sliderMenuVC)
         drawerVC.closeDrawerGestureModeMask = CloseDrawerGestureMode.All

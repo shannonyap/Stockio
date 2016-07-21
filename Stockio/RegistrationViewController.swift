@@ -102,10 +102,12 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
                 } else {
                     /* encoding the profile picture into a base-64 string to be stored in our DB */
                     let imageData:NSData = UIImagePNGRepresentation(self.cameraIcon.image!)!
-                    let profilePic = Constants.storageRef.child("users").child(user!.uid).putData(imageData, metadata: nil, completion: { (metadata, error) in
+                    Constants.storageRef.child("users").child(user!.uid).putData(imageData, metadata: nil, completion: { (metadata, error) in
                         if (error != nil) {
                             // Uh-oh, an error occurred!
+                            print(error?.localizedDescription)
                         } else {
+                            print("sucessfully saved image.")
                             // Metadata contains file metadata such as size, content-type, and download URL.
                             let downloadURL = metadata!.downloadURL
                         }
@@ -175,15 +177,7 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
     }
     
     func createAddPhotoIcon() {
-        let circlePath = UIBezierPath(arcCenter: CGPoint(x: self.view.bounds.size.width / 2,y: self.view.bounds.size.height / 3.75), radius: CGFloat(self.view.bounds.size.width / 6), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = circlePath.CGPath
-        //change the fill color
-        shapeLayer.fillColor = UIColor.clearColor().CGColor
-        //you can change the stroke color
-        shapeLayer.strokeColor = UIColor.blackColor().CGColor
-        //you can change the line width
-        shapeLayer.lineWidth = 2.0
+        let shapeLayer = drawCircle(CGPoint(x: self.view.bounds.size.width / 2,y: self.view.bounds.size.height / 3.75), radius: self.view.bounds.size.width / 6)
         view.layer.addSublayer(shapeLayer)
         
         self.cameraIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width * 0.15, height: self.view.bounds.size.width * 0.15))
