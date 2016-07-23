@@ -48,7 +48,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func didSelectSearchBarButtonItem(sender: UIBarButtonItem) {
-        print("searchButton pressed")
+        self.presentViewController(UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("searchVC"), animated: true, completion: nil)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
