@@ -10,12 +10,20 @@ import UIKit
 import Firebase
 import RAMReel
 
+protocol searchViewControllerDataDelegate: class {
+    func sendCompanyNameToMainVC(companyName: String)
+}
+
 class SearchViewController: UIViewController, UICollectionViewDelegate {
+
+    var delegate: searchViewControllerDataDelegate?
     
     var dataSource: SimplePrefixQueryDataSource!
     var ramReel: RAMReel<RAMCell, RAMTextField, SimplePrefixQueryDataSource>!
     
+    var setOfCompanyNames = Set<String>()
     var listOfCompanyNames = [String]()
+    var selectedCompany: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,31 +42,53 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             self.listOfCompanyNames = companyNameList
             self.dataSource = SimplePrefixQueryDataSource(self.listOfCompanyNames)
             
+            for companyElem in self.listOfCompanyNames {
+                self.setOfCompanyNames.insert(companyElem)
+            }
+            
             self.ramReel = RAMReel(frame: self.view.bounds, dataSource: self.dataSource, placeholder: "Type in a company's name") {
                 let result = $0
-            }
-            self.ramReel.hooks.append { _ in
-                // do something with the data.
+                if self.setOfCompanyNames.contains(result) {
+                    let confirmButton = self.addButton( CGRect(x: 0, y: self.view.bounds.size.height * 1.1, width: self.view.bounds.size.width * 0.6, height: self.view.bounds.size.height * 0.055), type: "confirm")
+                    UIView.animateWithDuration(0.7, delay: 0, options: .CurveEaseInOut, animations:  {
+                        confirmButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
+                    self.selectedCompany = result
+                } else {
+                    self.selectedCompany = ""
+                }
             }
             
             self.view.addSubview(self.ramReel.view)
-            self.addCancelButton()
+            self.addButton(CGRect(x: self.view.bounds.size.width * 0.9, y: UIApplication.sharedApplication().statusBarFrame.size.height, width: self.view.bounds.size.width * 0.068, height: self.view.bounds.size.width * 0.068), type: "Image")
             self.ramReel.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         }
         
     }
     
-    func addCancelButton() {
-        let cancelButton = UIButton(frame: CGRect(x: self.view.bounds.size.width * 0.9, y: UIApplication.sharedApplication().statusBarFrame.size.height, width: self.view.bounds.size.width * 0.068, height: self.view.bounds.size.width * 0.068))
-        cancelButton.setImage(UIImage(named: "crossIcons"), forState: UIControlState.Normal)
-        cancelButton.addTarget(self, action: #selector(highlightCrossButton(_:)), forControlEvents: UIControlEvents.TouchDown)
-        cancelButton.addTarget(self, action: #selector(exitToMainVC(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(cancelButton)
+    func addButton(customFrame: CGRect, type: String) -> UIButton {
+        let button = UIButton(frame: customFrame)
+        button.addTarget(self, action: #selector(highlightCrossButton(_:)), forControlEvents: UIControlEvents.TouchDown)
+        button.addTarget(self, action: #selector(exitToMainVC(_:)), forControlEvents: (UIControlEvents.TouchUpInside))
+        button.addTarget(self, action: #selector(exitToMainVC(_:)), forControlEvents: (UIControlEvents.TouchUpOutside))
+        if type == "confirm" {
+            button.center.x = self.view.center.x
+            button.setTitle("Confirm", forState: UIControlState.Normal)
+            button.backgroundColor = UIColor.grayColor()
+        } else {
+            button.setImage(UIImage(named: "crossIcons"), forState: UIControlState.Normal)
+        }
+        self.view.addSubview(button)
+        
+        return button
     }
     
     func exitToMainVC(sender: AnyObject) {
         (sender as! UIButton).alpha = 1.0
-        dismissViewControllerAnimated(true, completion: nil)
+        
+        if self.selectedCompany != "" {
+            delegate?.sendCompanyNameToMainVC(self.selectedCompany)
+            dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     func highlightCrossButton(sender: AnyObject) {

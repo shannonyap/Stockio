@@ -72,6 +72,7 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
         registerButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         registerButton.addTarget(self, action: #selector(isTapped(_:)), forControlEvents: UIControlEvents.TouchDown)
         registerButton.addTarget(self, action: #selector(createAccount(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        registerButton.addTarget(self, action: #selector(createAccount(_:)), forControlEvents: UIControlEvents.TouchUpOutside)
         
         self.view.addSubview(registerButton)
         

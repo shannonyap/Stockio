@@ -156,9 +156,11 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         if title == "Sign In" {
             button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: customFrame.size.height * 0.45)!
             button.addTarget(self, action: #selector(firebaseSignIn(_:)), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(firebaseSignIn(_:)), forControlEvents: .TouchUpOutside)
         } else if title == "SIGN UP" {
             button.titleLabel!.font = UIFont(name: "Aileron-Regular", size: 12.0)!
             button.addTarget(self, action: #selector(isTappedEnd(_:)), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(isTappedEnd(_:)), forControlEvents: .TouchUpOutside)
         }
 
         self.view.addSubview(button)
@@ -213,8 +215,10 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         button.imageView?.contentMode = .ScaleAspectFill
         if buttonType == "google" {
             button.addTarget(self, action: #selector(btnSignInPressed), forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(btnSignInPressed), forControlEvents: UIControlEvents.TouchUpOutside)
         } else if buttonType == "facebook" {
             button.addTarget(self, action: #selector(btnFBLoginPressed), forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(btnFBLoginPressed), forControlEvents: UIControlEvents.TouchUpOutside)
         }
         self.view.addSubview(button)
     }

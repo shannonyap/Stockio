@@ -9,9 +9,11 @@
 import UIKit
 import DrawerController
 
-class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, searchViewControllerDataDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    
+    var setOfCompanies = Set<String>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +28,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        print(setOfCompanies)
     }
     
     func displayEmptyWatchListLabel() {
@@ -48,7 +54,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func didSelectSearchBarButtonItem(sender: UIBarButtonItem) {
-        self.presentViewController(UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("searchVC"), animated: true, completion: nil)
+        let searchVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("searchVC") as! SearchViewController
+        searchVC.delegate = self
+        self.presentViewController(searchVC, animated: true, completion: nil)
+    }
+    
+    func sendCompanyNameToMainVC(companyName: String) {
+        self.setOfCompanies.insert(companyName)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -63,6 +75,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 0
     }
+    
     /*
     // MARK: - Navigation
 
