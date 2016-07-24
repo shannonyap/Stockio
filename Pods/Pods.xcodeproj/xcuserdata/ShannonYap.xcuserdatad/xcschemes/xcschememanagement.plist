@@ -34,15 +34,20 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RAMReel.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0EB19C1377A747F81110D44E2D5FCF78</key>
+		<key>0C6DB11881A1DC6EEB1D6E45E174EF7D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>33CD55B2B3D2CA157136D71484EA6536</key>
+		<key>0EB19C1377A747F81110D44E2D5FCF78</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -57,12 +62,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D083682CF36071495A66680CF5CE2BA5</key>
+		<key>8249B75415A4700851F4AF4EC47CD1B1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F4612DCD020C732FEC020D1241BF67E4</key>
+		<key>A2F85A4DAF0D43C49CF8654B75903D2B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D083682CF36071495A66680CF5CE2BA5</key>
 		<dict>
 			<key>primary</key>
 			<true/>

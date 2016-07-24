@@ -37,7 +37,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         emptyWatchlist.center = self.view.center
         emptyWatchlist.text = "Your Watchlist is empty"
         emptyWatchlist.textAlignment = .Center
-        emptyWatchlist.font = UIFont(name: "Suranna", size: 20.0)
+        emptyWatchlist.font = UIFont(name: "BebasNeueLight", size: 30.0)
         self.view.addSubview(emptyWatchlist)
     }
 

@@ -15,5 +15,6 @@ pod 'GoogleSignIn'
 pod 'FBSDKLoginKit'
 pod 'Pulsator'
 pod 'DrawerController'
+pod 'RAMReel'
 
 end

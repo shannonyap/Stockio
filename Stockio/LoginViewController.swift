@@ -75,7 +75,8 @@ extension UIViewController {
     
     func initVCWithNavBarPresets(title: String) {
         self.view.backgroundColor = UIColor.whiteColor()
-        let leftButton = DrawerBarButtonItem(target: self, action: #selector(leftDrawerButtonPress(_:)), menuIconColor: UIColor.blackColor())
+        let leftButton = UIBarButtonItem(image: UIImage(named: "menuIcon"), style: .Plain, target: self, action: #selector(leftDrawerButtonPress(_:)))
+        leftButton.tintColor = UIColor.blackColor()
         self.navigationItem.setLeftBarButtonItem(leftButton, animated: true)
         self.navigationController?.navigationBar.topItem!.title = title
 
@@ -188,7 +189,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     func createTopSegment(stockioBackground: UIView) {
         let stockioLabel = UILabel(frame: CGRect(x: (stockioBackground.bounds.size.width - stockioBackground.bounds.size.width * 0.3) / 2, y: stockioBackground.bounds.size.height * 0.15, width: stockioBackground.bounds.size.width * 0.3, height: stockioBackground.bounds.size.height * 0.15))
         stockioLabel.textAlignment = NSTextAlignment.Center
-        stockioLabel.font = UIFont(name: "AvenirNext-Regular", size: 25.0)
+        stockioLabel.font = UIFont(name: "Nickainley-Normal", size: 35.0)
         stockioLabel.text = "Stockio"
         stockioLabel.textColor = UIColor.whiteColor()
         
