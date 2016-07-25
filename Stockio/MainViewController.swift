@@ -11,9 +11,13 @@ import DrawerController
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, searchViewControllerDataDelegate {
     
+    var uid: String = ""
+    
     @IBOutlet weak var tableView: UITableView!
     
-    var setOfCompanies = Set<String>()
+    var setOfCompanies = Array<AnyObject>()
+    
+    var emptyWatchlist = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +28,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         addSearchBarButtonItem()
         
         self.tableView.tableFooterView = UIView()
-        displayEmptyWatchListLabel()
-        
+        self.tableView.separatorStyle = .None
+    
         // Do any additional setup after loading the view.
     }
     
@@ -34,17 +38,36 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidAppear(animated: Bool) {
-        print(setOfCompanies)
+    override func viewWillAppear(animated: Bool) {
+        Constants.firebaseRef.child("users/\(uid)/watchlist").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                self.setOfCompanies = snapshot.value as! Array<AnyObject>
+                
+                let watchListLabel = self.view.subviews.filter{$0 is UILabel}
+                
+                if self.setOfCompanies.count == 0 && watchListLabel.count < 1 {
+                    self.displayEmptyWatchListLabel()
+                } else if self.setOfCompanies.count != 0 {
+                    self.emptyWatchlist.removeFromSuperview()
+                }
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        if setOfCompanies.count != 0 {
+            Constants.firebaseRef.child("users/\(uid)/watchlist").setValue(setOfCompanies)
+        }
     }
     
     func displayEmptyWatchListLabel() {
-        let emptyWatchlist = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 0.3))
-        emptyWatchlist.center = self.view.center
-        emptyWatchlist.text = "Your Watchlist is empty"
-        emptyWatchlist.textAlignment = .Center
-        emptyWatchlist.font = UIFont(name: "BebasNeueLight", size: 30.0)
-        self.view.addSubview(emptyWatchlist)
+        self.emptyWatchlist = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 0.3))
+        self.emptyWatchlist.center = self.view.center
+        self.emptyWatchlist.text = "Your Watchlist is empty"
+        self.emptyWatchlist.textAlignment = .Center
+        self.emptyWatchlist.font = UIFont(name: "BebasNeueLight", size: 30.0)
+        self.view.addSubview(self.emptyWatchlist)
     }
 
     func addSearchBarButtonItem() {
@@ -59,21 +82,34 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.presentViewController(searchVC, animated: true, completion: nil)
     }
     
-    func sendCompanyNameToMainVC(companyName: String) {
-        self.setOfCompanies.insert(companyName)
+    func sendCompanyNameToMainVC(companyName: Dictionary<String, String>) {
+        self.setOfCompanies.append(companyName)
+        Constants.firebaseRef.child("users/\(uid)/watchlist").setValue(self.setOfCompanies)
+        print(self.setOfCompanies)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "reuseIdentifier")
+        let cellBorderLine = UIView(frame: CGRect(x: 0, y: self.view.bounds.size.height * 0.1, width: self.view.bounds.size.width * 0.95, height: 0.5))
+        cellBorderLine.center.x = self.view.center.x
+        cellBorderLine.backgroundColor = UIColor.grayColor()
+        cell.textLabel?.text = setOfCompanies[indexPath.row]["companyCode"] as? String
+        cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
+        
+        cell.addSubview(cellBorderLine)
         return cell
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return self.view.bounds.size.height * 0.1
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return setOfCompanies.count
     }
     
     /*

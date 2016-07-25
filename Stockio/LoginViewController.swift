@@ -94,7 +94,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+    
         addTapGesture()
         
         GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
@@ -291,6 +291,14 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
             
             print("User logged in with google")
             
+            
+            let googleDisplayName: String = user!.displayName!
+            Constants.firebaseRef.child("users").observeSingleEventOfType(.Value, withBlock: { snapshot in
+                if !snapshot.hasChild(user!.uid){
+                    Constants.firebaseRef.child("users").child(user!.uid).setValue(["googleDisplayName": googleDisplayName])
+                }
+            })
+        
             self.setUpSliderMenuVC(user!.uid)
         })
     }
@@ -307,7 +315,10 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
     func setUpSliderMenuVC(uid: String) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
-        let centerNav = UINavigationController(rootViewController: storyboard.instantiateViewControllerWithIdentifier("mainVC") as! MainViewController)
+        let mainVC = storyboard.instantiateViewControllerWithIdentifier("mainVC") as! MainViewController
+        mainVC.uid = uid
+        
+        let centerNav = UINavigationController(rootViewController: mainVC)
         centerNav.navigationBar.barTintColor = UIColor.whiteColor()
         
         let sliderMenuVC = storyboard.instantiateViewControllerWithIdentifier("sliderMenu") as! SliderMenuViewController

@@ -7,11 +7,10 @@
 //
 
 import UIKit
-import Firebase
 import RAMReel
 
 protocol searchViewControllerDataDelegate: class {
-    func sendCompanyNameToMainVC(companyName: String)
+    func sendCompanyNameToMainVC(companyName: Dictionary<String, String>)
 }
 
 class SearchViewController: UIViewController, UICollectionViewDelegate {
@@ -23,7 +22,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     var setOfCompanyNames = Set<String>()
     var listOfCompanyNames = [String]()
-    var selectedCompany: String = ""
+    var selectedCompany: Dictionary<String, String> = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,14 +46,18 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             }
             
             self.ramReel = RAMReel(frame: self.view.bounds, dataSource: self.dataSource, placeholder: "Type in a company's name") {
-                let result = $0
-                if self.setOfCompanyNames.contains(result) {
-                    let confirmButton = self.addButton( CGRect(x: 0, y: self.view.bounds.size.height * 1.1, width: self.view.bounds.size.width * 0.6, height: self.view.bounds.size.height * 0.055), type: "confirm")
+                let chosenCompany = $0
+                if self.setOfCompanyNames.contains(chosenCompany) {
+                    let addToWatchListButton = self.addButton( CGRect(x: 0, y: self.view.bounds.size.height * 1.1, width: self.view.bounds.size.width * 0.6, height: self.view.bounds.size.height * 0.055), type: "addToWatchList")
                     UIView.animateWithDuration(0.7, delay: 0, options: .CurveEaseInOut, animations:  {
-                        confirmButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
-                    self.selectedCompany = result
+                        addToWatchListButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
+                    Constants.firebaseRef.child("listOfCompanyNamesAndCodes").observeEventType(.ChildAdded, withBlock: { snapshot in
+                        if snapshot.value!["companyName"] as! String == chosenCompany {
+                            self.selectedCompany = ["companyName": snapshot.value!["companyName"] as! String, "companyCode": snapshot.value!["companyCode"] as! String]
+                        }
+                    })
                 } else {
-                    self.selectedCompany = ""
+                    self.selectedCompany = [:]
                 }
             }
             
@@ -70,9 +73,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         button.addTarget(self, action: #selector(highlightCrossButton(_:)), forControlEvents: UIControlEvents.TouchDown)
         button.addTarget(self, action: #selector(exitToMainVC(_:)), forControlEvents: (UIControlEvents.TouchUpInside))
         button.addTarget(self, action: #selector(exitToMainVC(_:)), forControlEvents: (UIControlEvents.TouchUpOutside))
-        if type == "confirm" {
+        if type == "addToWatchList" {
             button.center.x = self.view.center.x
-            button.setTitle("Confirm", forState: UIControlState.Normal)
+            button.setTitle("Add to Watchlist", forState: UIControlState.Normal)
+            button.titleLabel?.font = UIFont(name: "FjallaOne", size: 12.0)
             button.backgroundColor = UIColor.grayColor()
         } else {
             button.setImage(UIImage(named: "crossIcons"), forState: UIControlState.Normal)
@@ -82,17 +86,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         return button
     }
     
-    func exitToMainVC(sender: AnyObject) {
-        (sender as! UIButton).alpha = 1.0
-        
-        if self.selectedCompany != "" {
+    func exitToMainVC(sender: UIButton) {
+        sender.alpha = 1.0
+        if !self.selectedCompany.isEmpty && sender.titleLabel?.text != nil {
             delegate?.sendCompanyNameToMainVC(self.selectedCompany)
-            dismissViewControllerAnimated(true, completion: nil)
         }
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func highlightCrossButton(sender: AnyObject) {
-        (sender as! UIButton).alpha = 0.5
+    func highlightCrossButton(sender: UIButton) {
+        sender.alpha = 0.5
     }
     
     func getAllCompanyNames(completion: (companyNameList: [String]) -> Void) {

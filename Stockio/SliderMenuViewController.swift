@@ -18,6 +18,7 @@ class SliderMenuViewController: UITableViewController {
 
         self.tableView.tableFooterView = UIView()
         self.tableView.separatorStyle = .None
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -71,7 +72,6 @@ class SliderMenuViewController: UITableViewController {
                 }
             })
         } else {
-            cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
             cell.textLabel?.font = UIFont(name: "EncodeSans-Light", size: 12.0)
             cell.textLabel?.text = slideMenuTabs[indexPath.row - 1]
             cell.bounds.size.height = 40.0
@@ -80,7 +80,6 @@ class SliderMenuViewController: UITableViewController {
         let customSeparator = UIView(frame: CGRect(x: 0, y: cell.bounds.size.height - 1, width: self.tableView.bounds.size.width, height: 0.5))
         customSeparator.backgroundColor = UIColor.grayColor()
         cell.addSubview(customSeparator)
-        
         return cell
     }
     
@@ -88,7 +87,6 @@ class SliderMenuViewController: UITableViewController {
         if indexPath.row == 0 {
             return 200
         }
-        
         return 40
     }
     
@@ -98,7 +96,9 @@ class SliderMenuViewController: UITableViewController {
             if title == "Watchlist" {
                 self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
             } else {
-                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("mainVC")), withFullCloseAnimation: true, completion: nil)
+                let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("mainVC") as! MainViewController
+                mainVC.uid = uid
+                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: mainVC), withFullCloseAnimation: true, completion: nil)
             }
         } else if indexPath.row == 2 {
             if title == "Daily Dashboard" {
