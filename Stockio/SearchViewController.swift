@@ -23,6 +23,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     var setOfCompanyNames = Set<String>()
     var listOfCompanyNames = [String]()
     var selectedCompany: Dictionary<String, String> = [:]
+    var addToWatchListButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,15 +49,19 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             self.ramReel = RAMReel(frame: self.view.bounds, dataSource: self.dataSource, placeholder: "Type in a company's name") {
                 let chosenCompany = $0
                 if self.setOfCompanyNames.contains(chosenCompany) {
-                    let addToWatchListButton = self.addButton( CGRect(x: 0, y: self.view.bounds.size.height * 1.1, width: self.view.bounds.size.width * 0.6, height: self.view.bounds.size.height * 0.055), type: "addToWatchList")
+                    if !self.addToWatchListButton.isDescendantOfView(self.view) {
+                        self.addToWatchListButton = self.addButton( CGRect(x: 0, y: self.view.bounds.size.height * 1.1, width: self.view.bounds.size.width * 0.6, height: self.view.bounds.size.height * 0.055), type: "addToWatchList")
+                    }
                     UIView.animateWithDuration(0.7, delay: 0, options: .CurveEaseInOut, animations:  {
-                        addToWatchListButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
+                        self.addToWatchListButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
                     Constants.firebaseRef.child("listOfCompanyNamesAndCodes").observeEventType(.ChildAdded, withBlock: { snapshot in
                         if snapshot.value!["companyName"] as! String == chosenCompany {
                             self.selectedCompany = ["companyName": snapshot.value!["companyName"] as! String, "companyCode": snapshot.value!["companyCode"] as! String]
                         }
                     })
                 } else {
+                    UIView.animateWithDuration(0.7, delay: 0, options: .CurveEaseInOut, animations:  {
+                        self.addToWatchListButton.frame.origin.y = self.view.bounds.size.height * 1.1 }, completion: nil)
                     self.selectedCompany = [:]
                 }
             }

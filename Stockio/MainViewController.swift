@@ -29,7 +29,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.tableView.tableFooterView = UIView()
         self.tableView.separatorStyle = .None
-    
+        self.tableView.allowsSelection = false
+        
         // Do any additional setup after loading the view.
     }
     
@@ -44,13 +45,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.setOfCompanies = snapshot.value as! Array<AnyObject>
                 
                 let watchListLabel = self.view.subviews.filter{$0 is UILabel}
-                
+
                 if self.setOfCompanies.count == 0 && watchListLabel.count < 1 {
                     self.displayEmptyWatchListLabel()
                 } else if self.setOfCompanies.count != 0 {
                     self.emptyWatchlist.removeFromSuperview()
                 }
                 self.tableView.reloadData()
+            } else {
+                self.displayEmptyWatchListLabel()
             }
         })
     }
@@ -92,6 +95,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return 1
     }
     
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.setOfCompanies.count
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "reuseIdentifier")
         let cellBorderLine = UIView(frame: CGRect(x: 0, y: self.view.bounds.size.height * 0.1, width: self.view.bounds.size.width * 0.95, height: 0.5))
@@ -108,8 +115,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return self.view.bounds.size.height * 0.1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return setOfCompanies.count
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            self.setOfCompanies.removeAtIndex(indexPath.row)
+            tableView.reloadData()
+        }
     }
     
     /*
