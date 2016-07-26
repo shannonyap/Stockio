@@ -10,7 +10,7 @@ import UIKit
 import RAMReel
 
 protocol searchViewControllerDataDelegate: class {
-    func sendCompanyNameToMainVC(companyName: Dictionary<String, String>)
+    func sendCompanyNameToMainVC(companyName: Dictionary<String, Dictionary<String, String>>)
 }
 
 class SearchViewController: UIViewController, UICollectionViewDelegate {
@@ -22,7 +22,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     var setOfCompanyNames = Set<String>()
     var listOfCompanyNames = [String]()
-    var selectedCompany: Dictionary<String, String> = [:]
+    var selectedCompany: Dictionary<String, Dictionary<String, String>> = [:]
     var addToWatchListButton = UIButton()
     
     override func viewDidLoad() {
@@ -56,7 +56,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
                         self.addToWatchListButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
                     Constants.firebaseRef.child("listOfCompanyNamesAndCodes").observeEventType(.ChildAdded, withBlock: { snapshot in
                         if snapshot.value!["companyName"] as! String == chosenCompany {
-                            self.selectedCompany = ["companyName": snapshot.value!["companyName"] as! String, "companyCode": snapshot.value!["companyCode"] as! String]
+                            self.selectedCompany = [snapshot.value!["companyCode"] as! String: ["companyName": snapshot.value!["companyName"] as! String, "companyCode": snapshot.value!["companyCode"] as! String]]
                         }
                     })
                 } else {

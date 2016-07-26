@@ -15,8 +15,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var tableView: UITableView!
     
-    var setOfCompanies = Array<AnyObject>()
-    
+    var dictionaryOfCompanies = Dictionary<String, Dictionary<String, String>>()
+    var setOfCompanyNames = Array<String>()
     var emptyWatchlist = UILabel()
     
     override func viewDidLoad() {
@@ -42,13 +42,18 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(animated: Bool) {
         Constants.firebaseRef.child("users/\(uid)/watchlist").observeSingleEventOfType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
-                self.setOfCompanies = snapshot.value as! Array<AnyObject>
+                self.dictionaryOfCompanies = snapshot.value as! Dictionary<String, Dictionary<String, String>>
+                
+                self.setOfCompanyNames = []
+                for keys in self.dictionaryOfCompanies {
+                    self.setOfCompanyNames.append(keys.0)
+                }
                 
                 let watchListLabel = self.view.subviews.filter{$0 is UILabel}
 
-                if self.setOfCompanies.count == 0 && watchListLabel.count < 1 {
+                if self.dictionaryOfCompanies.count == 0 && watchListLabel.count < 1 {
                     self.displayEmptyWatchListLabel()
-                } else if self.setOfCompanies.count != 0 {
+                } else if self.dictionaryOfCompanies.count != 0 {
                     self.emptyWatchlist.removeFromSuperview()
                 }
                 self.tableView.reloadData()
@@ -59,8 +64,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     override func viewWillDisappear(animated: Bool) {
-        if setOfCompanies.count != 0 {
-            Constants.firebaseRef.child("users/\(uid)/watchlist").setValue(setOfCompanies)
+        if dictionaryOfCompanies.count != 0 {
+            Constants.firebaseRef.child("users/\(uid)/watchlist").setValue(dictionaryOfCompanies)
         }
     }
     
@@ -85,10 +90,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.presentViewController(searchVC, animated: true, completion: nil)
     }
     
-    func sendCompanyNameToMainVC(companyName: Dictionary<String, String>) {
-        self.setOfCompanies.append(companyName)
-        Constants.firebaseRef.child("users/\(uid)/watchlist").setValue(self.setOfCompanies)
-        print(self.setOfCompanies)
+    func sendCompanyNameToMainVC(companyName: Dictionary<String, Dictionary<String, String>>) {
+        self.dictionaryOfCompanies[companyName.keys.first!] = companyName[companyName.keys.first!]
+        Constants.firebaseRef.child("users/\(uid)/watchlist/\(companyName.keys.first!)").setValue(companyName[companyName.keys.first!])
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -96,7 +100,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.setOfCompanies.count
+        return self.dictionaryOfCompanies.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -104,7 +108,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cellBorderLine = UIView(frame: CGRect(x: 0, y: self.view.bounds.size.height * 0.1, width: self.view.bounds.size.width * 0.95, height: 0.5))
         cellBorderLine.center.x = self.view.center.x
         cellBorderLine.backgroundColor = UIColor.grayColor()
-        cell.textLabel?.text = setOfCompanies[indexPath.row]["companyCode"] as? String
+        cell.textLabel?.text = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyCode"]
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
         
         cell.addSubview(cellBorderLine)
@@ -121,7 +125,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            self.setOfCompanies.removeAtIndex(indexPath.row)
+            let companyCode = self.setOfCompanyNames[indexPath.row]
+            self.dictionaryOfCompanies.removeValueForKey(self.setOfCompanyNames[indexPath.row])
+            self.setOfCompanyNames.removeAtIndex(indexPath.row)
+            Constants.firebaseRef.child("users/\(self.uid)/watchlist/\(companyCode)").removeValue()
             tableView.reloadData()
         }
     }
