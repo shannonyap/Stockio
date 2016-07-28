@@ -30,7 +30,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.tableFooterView = UIView()
         self.tableView.separatorStyle = .None
         self.tableView.allowsSelection = false
-        
+
         // Do any additional setup after loading the view.
     }
     
@@ -111,6 +111,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.textLabel?.text = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyCode"]
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
         
+        let priceChangeStatus = UILabel(frame: CGRect(x: cell.bounds.size.width * 0.8, y: 0, width: cell.bounds.size.width * 0.2, height: cell.bounds.size.height * 0.8))
+        priceChangeStatus.center.y = cell.bounds.size.height / 2
+        priceChangeStatus.text = "ASfdsf"
+        priceChangeStatus.backgroundColor = UIColor.brownColor()
+        
+        cell.addSubview(priceChangeStatus)
         cell.addSubview(cellBorderLine)
         return cell
     }

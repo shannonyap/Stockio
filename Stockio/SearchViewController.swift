@@ -24,6 +24,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     var listOfCompanyNames = [String]()
     var selectedCompany: Dictionary<String, Dictionary<String, String>> = [:]
     var addToWatchListButton = UIButton()
+    var closeButton = UIButton()
+    var circleLoadingPathLayer = CAShapeLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,14 +40,20 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.circleLoadingPathLayer = createCircleLoading()
+        animateLoadingCircle(self.circleLoadingPathLayer)
+        
+        self.closeButton = self.addButton(CGRect(x: self.view.bounds.size.width * 0.9, y: UIApplication.sharedApplication().statusBarFrame.size.height, width: self.view.bounds.size.width * 0.068, height: self.view.bounds.size.width * 0.068), type: "Image")
+        
         getAllCompanyNames { (companyNameList) in
+            self.circleLoadingPathLayer.removeFromSuperlayer()
             self.listOfCompanyNames = companyNameList
             self.dataSource = SimplePrefixQueryDataSource(self.listOfCompanyNames)
-            
             for companyElem in self.listOfCompanyNames {
                 self.setOfCompanyNames.insert(companyElem)
             }
-            
+        
+            self.dataSource = SimplePrefixQueryDataSource(self.listOfCompanyNames)
             self.ramReel = RAMReel(frame: self.view.bounds, dataSource: self.dataSource, placeholder: "Type in a company's name") {
                 let chosenCompany = $0
                 if self.setOfCompanyNames.contains(chosenCompany) {
@@ -66,11 +74,36 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
                 }
             }
             
-            self.view.addSubview(self.ramReel.view)
-            self.addButton(CGRect(x: self.view.bounds.size.width * 0.9, y: UIApplication.sharedApplication().statusBarFrame.size.height, width: self.view.bounds.size.width * 0.068, height: self.view.bounds.size.width * 0.068), type: "Image")
+            self.view.insertSubview(self.ramReel.view, belowSubview: self.closeButton)
             self.ramReel.view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         }
         
+    }
+    
+    func createCircleLoading() -> CAShapeLayer {
+        let circlePath = UIBezierPath(arcCenter: self.view.center, radius: CGFloat(self.view.bounds.size.width * 0.1), startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.CGPath
+        shapeLayer.fillColor = UIColor.clearColor().CGColor
+        shapeLayer.strokeColor = UIColor.blackColor().CGColor
+        shapeLayer.lineWidth = 3.0
+        shapeLayer.strokeEnd = 0.0
+        
+        self.view.layer.addSublayer(shapeLayer)
+        return shapeLayer
+    }
+    
+    func animateLoadingCircle(circleLoadingShapeLayer: CAShapeLayer) {
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.repeatCount = Float.infinity
+        animation.duration = 1
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+
+        circleLoadingShapeLayer.strokeEnd = 1.0
+        circleLoadingShapeLayer.addAnimation(animation, forKey: "animateCircle")
     }
     
     func addButton(customFrame: CGRect, type: String) -> UIButton {
