@@ -95,6 +95,75 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         Constants.firebaseRef.child("users/\(uid)/watchlist/\(companyName.keys.first!)").setValue(companyName[companyName.keys.first!])
     }
     
+    func createPriceChangeStatusLabel(customFrame: CGRect, font: UIFont, center: CGFloat, cornerRadius: CGFloat, companyCode: String) -> UILabel {
+        let priceChangeStatus = UILabel(frame: customFrame)
+        priceChangeStatus.center.y = center
+        priceChangeStatus.font = font
+        priceChangeStatus.backgroundColor = UIColor.lightGrayColor()
+        priceChangeStatus.textAlignment = .Center
+        priceChangeStatus.clipsToBounds = true
+        priceChangeStatus.layer.cornerRadius = cornerRadius
+        
+        Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if !snapshot.exists() {
+                let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/WIKI/" + companyCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f")
+                let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+                    do {
+                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                        
+                        let latestDate = json["dataset"]!!["data"]!![0][0] as! String /* 0 denotes the position of the latest Date in the json data */
+                        let latestOpenPrice = json["dataset"]!!["data"]!![0][1] as! Float /* 1 denotes the position of the open price in the json data */
+                        let latestClosePrice = json["dataset"]!!["data"]!![0][4] as! Float /* 4 denotes the position of the close price in the json data*/
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            let priceChange = latestClosePrice - latestOpenPrice
+                            priceChangeStatus.text = String(latestClosePrice - latestOpenPrice)
+                            
+                            Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data").setValue(["latestDate": latestDate, "latestDayPriceChange": priceChangeStatus.text!])
+                            self.changeColorOfPriceStatus(priceChangeStatus, valueChange: priceChange)
+                        }
+                    } catch {
+                        print("error serializing JSON: \(error)")
+                    }
+                }
+                
+                task.resume()
+            } else {
+                let latestDateFromData = snapshot.value!["latestDate"] as! String
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let date = dateFormatter.dateFromString(latestDateFromData)
+                let calendar = NSCalendar.currentCalendar()
+                
+                /* If this date falls on a weekend */
+                if !calendar.isDateInWeekend(date!) {
+                    let parsingDateFormatter = NSDateFormatter()
+                    parsingDateFormatter.dateFormat = "yyyy-MM-dd"
+                    let yesterday = parsingDateFormatter.stringFromDate(calendar.dateByAddingUnit(.Day, value: -1, toDate: NSDate(), options: [])!)
+                    if yesterday == latestDateFromData {
+                        Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data").observeSingleEventOfType(.Value, withBlock:  { snapshot in
+                            
+                            let latestDayPriceChange = snapshot.value!["latestDayPriceChange"] as! String
+                            dispatch_async(dispatch_get_main_queue()) {
+                                priceChangeStatus.text = String(latestDayPriceChange)
+                                self.changeColorOfPriceStatus(priceChangeStatus, valueChange: Float(latestDayPriceChange)!)
+                            }
+                        })
+                    }
+                }
+            }
+        })
+        return priceChangeStatus
+    }
+    
+    func changeColorOfPriceStatus(priceChangeStatus: UILabel, valueChange: Float) {
+        if valueChange < 0 {
+            priceChangeStatus.backgroundColor = UIColor(red: 232/255.0, green: 90/255.0, blue: 89/255.0, alpha: 1.0)
+        } else if valueChange > 0 {
+            priceChangeStatus.backgroundColor = UIColor(red: 86/255.0, green: 188/255.0, blue: 138/255.0, alpha: 1.0)
+        }
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -111,10 +180,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.textLabel?.text = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyCode"]
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
         
-        let priceChangeStatus = UILabel(frame: CGRect(x: cell.bounds.size.width * 0.8, y: 0, width: cell.bounds.size.width * 0.2, height: cell.bounds.size.height * 0.8))
-        priceChangeStatus.center.y = cell.bounds.size.height / 2
-        priceChangeStatus.text = "ASfdsf"
-        priceChangeStatus.backgroundColor = UIColor.brownColor()
+        let priceChangeStatus = createPriceChangeStatusLabel(CGRect(x: cell.bounds.size.width * 0.8, y: 0, width: cell.bounds.size.width * 0.175, height: cell.bounds.size.height * 0.7), font: UIFont(name: "BebasNeueLight", size: cell.bounds.size.height * 0.5)!, center: cell.bounds.size.height * 0.65, cornerRadius: cell.bounds.size.height * 0.1, companyCode: cell.textLabel!.text!)
         
         cell.addSubview(priceChangeStatus)
         cell.addSubview(cellBorderLine)
