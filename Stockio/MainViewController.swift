@@ -117,7 +117,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                         
                         dispatch_async(dispatch_get_main_queue()) {
                             let priceChange = latestClosePrice - latestOpenPrice
-                            priceChangeStatus.text = String(latestClosePrice - latestOpenPrice)
+                            priceChangeStatus.text = String(format: "%.3f", priceChange)
                             
                             Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data").setValue(["latestDate": latestDate, "latestDayPriceChange": priceChangeStatus.text!])
                             self.changeColorOfPriceStatus(priceChangeStatus, valueChange: priceChange)
@@ -145,7 +145,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                             
                             let latestDayPriceChange = snapshot.value!["latestDayPriceChange"] as! String
                             dispatch_async(dispatch_get_main_queue()) {
-                                priceChangeStatus.text = String(latestDayPriceChange)
+                                priceChangeStatus.text = String(format: "%.3f", Float(latestDayPriceChange)!)
                                 self.changeColorOfPriceStatus(priceChangeStatus, valueChange: Float(latestDayPriceChange)!)
                             }
                         })
@@ -161,6 +161,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             priceChangeStatus.backgroundColor = UIColor(red: 232/255.0, green: 90/255.0, blue: 89/255.0, alpha: 1.0)
         } else if valueChange > 0 {
             priceChangeStatus.backgroundColor = UIColor(red: 86/255.0, green: 188/255.0, blue: 138/255.0, alpha: 1.0)
+        } else if valueChange == 0 {
+            priceChangeStatus.text = "UNCH"
         }
     }
     
@@ -179,8 +181,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         cellBorderLine.backgroundColor = UIColor.grayColor()
         cell.textLabel?.text = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyCode"]
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
-        
-        let priceChangeStatus = createPriceChangeStatusLabel(CGRect(x: cell.bounds.size.width * 0.8, y: 0, width: cell.bounds.size.width * 0.175, height: cell.bounds.size.height * 0.7), font: UIFont(name: "BebasNeueLight", size: cell.bounds.size.height * 0.5)!, center: cell.bounds.size.height * 0.65, cornerRadius: cell.bounds.size.height * 0.1, companyCode: cell.textLabel!.text!)
+
+        let priceChangeStatus = createPriceChangeStatusLabel(CGRect(x: self.view.bounds.size.width * 0.95 - cell.bounds.size.width * 0.175, y: 0, width: cell.bounds.size.width * 0.175, height: cell.bounds.size.height * 0.7), font: UIFont(name: "BebasNeueLight", size: cell.bounds.size.height * 0.5)!, center: self.view.bounds.size.height * 0.05, cornerRadius: cell.bounds.size.height * 0.1, companyCode: cell.textLabel!.text!)
         
         cell.addSubview(priceChangeStatus)
         cell.addSubview(cellBorderLine)

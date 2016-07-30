@@ -110,7 +110,7 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
                         } else {
                             print("sucessfully saved image.")
                             // Metadata contains file metadata such as size, content-type, and download URL.
-                            let downloadURL = metadata!.downloadURL
+                            _ = metadata!.downloadURL
                         }
                     })
                     
