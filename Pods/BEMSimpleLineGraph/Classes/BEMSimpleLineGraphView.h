@@ -137,6 +137,8 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 //----- PROPERTIES -------------------------------------------------------------------//
 //------------------------------------------------------------------------------------//
 
+/* Shannon's properties */
+@property NSMutableArray *dataValues;
 
 /// The graph's label font used on various axis. This property may be privately overwritten, do not expect full functionality from this property.
 @property (strong, nonatomic, nullable) UIFont *labelFont;

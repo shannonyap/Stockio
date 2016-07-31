@@ -12,7 +12,6 @@ import DrawerController
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, searchViewControllerDataDelegate, BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate {
     
     var uid: String = ""
-    
     @IBOutlet weak var tableView: UITableView!
     
     var dictionaryOfCompanies = Dictionary<String, Dictionary<String, String>>()
@@ -109,56 +108,25 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data").observeSingleEventOfType(.Value, withBlock: { snapshot in
             if !snapshot.exists() {
-                let calendar = NSCalendar.currentCalendar()
-                var latestStockDate = NSDate()
-                while calendar.isDateInWeekend(latestStockDate) {
-                    latestStockDate = calendar.dateByAddingUnit(.Day, value: -1, toDate: latestStockDate, options: [])!
-                }
-                let endDate = dateFormatter.stringFromDate(latestStockDate)
-                let startDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(.Day, value: -6, toDate: latestStockDate, options: [])!)
-                
-                let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/WIKI/" + companyCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
-                let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-                    do {
-                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                        
-                        let latestDate = json["dataset"]!!["data"]!![0][0] as! String /* 0 denotes the position of the latest Date in the json data */
-                        let previousClosePrice = json["dataset"]!!["data"]!![1][4] as! Float /* 1 denotes the position of yesterday's close price in the json data */
-                        let latestClosePrice = json["dataset"]!!["data"]!![0][4] as! Float /* 4 denotes the position of the close price in the json data*/
-                        
-                        let fiveDayStockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
-                        self.miniGraphData = []
-                        for dayStockData in fiveDayStockData {
-                            self.miniGraphData.append(["Date": String(dayStockData[0]), "Value": String(dayStockData[1])])
-                        }
-                        
-                        dispatch_async(dispatch_get_main_queue()) {
-                            let priceChange = latestClosePrice - previousClosePrice
-                            priceChangeStatus.text = String(format: "%.3f", priceChange)
-                            Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data").setValue(["latestDate": latestDate, "latestDayPriceChange": priceChangeStatus.text!])
-                            self.changeColorOfPriceStatus(priceChangeStatus, valueChange: priceChange)
-                            
-                            /* Add the data for the 5-day graph into the DB */
-                            Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data/fiveDayStockData").setValue(self.miniGraphData)
-                            completion(result: priceChangeStatus, data: self.miniGraphData)
-                        }
-                    } catch {
-                        print("error serializing JSON: \(error)")
-                    }
-                }
-                
-                task.resume()
+                self.getFiveDayStockData(dateFormatter, companyCode: companyCode, priceChangeStatus: priceChangeStatus, completion: { result, data in
+                    completion(result: result, data: data)
+                })
             } else {
                 let latestDateFromData = snapshot.value!["latestDate"] as! String
                 let date = dateFormatter.dateFromString(latestDateFromData)
                 let calendar = NSCalendar.currentCalendar()
                 
-                /* If this date falls on a weekend */
+                /* If the latest date is does not fall on a weekend */
                 if !calendar.isDateInWeekend(date!) {
                     let parsingDateFormatter = NSDateFormatter()
                     parsingDateFormatter.dateFormat = "yyyy-MM-dd"
-                    let yesterday = parsingDateFormatter.stringFromDate(calendar.dateByAddingUnit(.Day, value: -1, toDate: NSDate(), options: [])!)
-                    if yesterday == latestDateFromData {
+                    
+                    var yesterday = NSDate()
+                    while calendar.isDateInWeekend(yesterday) {
+                        yesterday = calendar.dateByAddingUnit(.Day, value: -1, toDate: yesterday, options: [])!
+                    }
+                    
+                    if parsingDateFormatter.stringFromDate(yesterday) == latestDateFromData {
                         let latestDayPriceChange = snapshot.value!["latestDayPriceChange"] as! String
                         dispatch_async(dispatch_get_main_queue()) {
                             priceChangeStatus.text = String(format: "%.3f", Float(latestDayPriceChange)!)
@@ -167,11 +135,58 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                             self.miniGraphData = snapshot.value!["fiveDayStockData"] as! Array<Dictionary<String, String>>
                             completion(result: priceChangeStatus, data: self.miniGraphData)
                         }
+                    } else {
+                        /* If today is not the latest date from the DB, update the data in the DB. */
+                        self.getFiveDayStockData(dateFormatter, companyCode: companyCode, priceChangeStatus: priceChangeStatus, completion: { result, data in
+                            completion(result: result, data: data)
+                        })
                     }
                 }
             }
         })
         return priceChangeStatus
+    }
+    
+    func getFiveDayStockData(dateFormatter: NSDateFormatter, companyCode: String, priceChangeStatus: UILabel, completion: (result: UILabel, data: Array<Dictionary<String, String>>) -> Void) {
+        let calendar = NSCalendar.currentCalendar()
+        var latestStockDate = NSDate()
+        while calendar.isDateInWeekend(latestStockDate) {
+            latestStockDate = calendar.dateByAddingUnit(.Day, value: -1, toDate: latestStockDate, options: [])!
+        }
+        let endDate = dateFormatter.stringFromDate(latestStockDate)
+        let startDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(.Day, value: -6, toDate: latestStockDate, options: [])!)
+        
+        let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/WIKI/" + companyCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                
+                let latestDate = json["dataset"]!!["data"]!![0][0] as! String /* 0 denotes the position of the latest Date in the json data */
+                let previousClosePrice = json["dataset"]!!["data"]!![1][4] as! Float /* 1 denotes the position of yesterday's close price in the json data */
+                let latestClosePrice = json["dataset"]!!["data"]!![0][4] as! Float /* 4 denotes the position of the close price in the json data*/
+                
+                let fiveDayStockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
+                self.miniGraphData = []
+                for dayStockData in fiveDayStockData {
+                    self.miniGraphData.append(["Date": String(dayStockData[0]), "Value": String(dayStockData[1])])
+                }
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    let priceChange = latestClosePrice - previousClosePrice
+                    priceChangeStatus.text = String(format: "%.3f", priceChange)
+                    Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data").setValue(["latestDate": latestDate, "latestDayPriceChange": priceChangeStatus.text!])
+                    self.changeColorOfPriceStatus(priceChangeStatus, valueChange: priceChange)
+                    
+                    /* Add the data for the 5-day graph into the DB */
+                    Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(companyCode)/data/fiveDayStockData").setValue(self.miniGraphData)
+                    completion(result: priceChangeStatus, data: self.miniGraphData)
+                }
+            } catch {
+                print("error serializing JSON: \(error)")
+            }
+        }
+        
+        task.resume()
     }
     
     func changeColorOfPriceStatus(priceChangeStatus: UILabel, valueChange: Float) {
@@ -184,9 +199,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func createMiniGraph(customFrame: CGRect,lineColor: UIColor ,cell: UITableViewCell) {
+    func createMiniGraph(customFrame: CGRect,lineColor: UIColor, cell: UITableViewCell, dataValues: Array<Dictionary<String,String>>) {
+        
         let miniGraph = BEMSimpleLineGraphView(frame: customFrame)
-        print("Waht \(self.miniGraphData)")
         miniGraph.center.x = cell.center.x
         miniGraph.center.y = self.view.bounds.size.height * 0.05
         miniGraph.userInteractionEnabled = false
@@ -196,6 +211,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         miniGraph.colorTop = UIColor.clearColor()
         miniGraph.colorBottom = miniGraph.colorTop
         miniGraph.colorLine = lineColor
+        miniGraph.dataValues = NSMutableArray(array: dataValues)
         cell.addSubview(miniGraph)
     }
     
@@ -217,10 +233,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
         
         let priceChangeStatus = createPriceChangeStatusLabel(CGRect(x: self.view.bounds.size.width * 0.95 - cell.bounds.size.width * 0.175, y: 0, width: cell.bounds.size.width * 0.175, height: cell.bounds.size.height * 0.7), font: UIFont(name: "BebasNeueLight", size: cell.bounds.size.height * 0.5)!, center: self.view.bounds.size.height * 0.05, cornerRadius: cell.bounds.size.height * 0.1, companyCode: cell.textLabel!.text!, completion: { priceChangeLabel, data in
-            self.miniGraphData = data
-            self.createMiniGraph(CGRect(x: 0, y: 0, width: cell.bounds.size.width * 0.3, height: self.view.bounds.size.height * 0.095),lineColor: priceChangeLabel.backgroundColor!, cell: cell)
+            self.createMiniGraph(CGRect(x: 0, y: 0, width: cell.bounds.size.width * 0.3, height: self.view.bounds.size.height * 0.095),lineColor: priceChangeLabel.backgroundColor!, cell: cell, dataValues: data)
         })
-        
+    
         cell.addSubview(priceChangeStatus)
         cell.addSubview(cellBorderLine)
         
@@ -250,14 +265,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func lineGraph(graph: BEMSimpleLineGraphView, valueForPointAtIndex index: Int) -> CGFloat {
-        print(self.miniGraphData[index])
-        return CGFloat(NSNumberFormatter().numberFromString(self.miniGraphData[index]["Value"]!)!)
+        let dictionaryItem = graph.dataValues[index]
+        return CGFloat(NSNumberFormatter().numberFromString(dictionaryItem["Value"] as! String)!)
     }
-    
-    func lineGraphDidFinishLoading(graph: BEMSimpleLineGraphView) {
-        print(graph.graphValuesForDataPoints())
-    }
-    
+
     /*
     // MARK: - Navigation
 
