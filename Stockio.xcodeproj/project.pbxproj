@@ -29,6 +29,7 @@
 		341A737A9E7D7B82EABFB807 /* Pods-Stockio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stockio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Stockio/Pods-Stockio.debug.xcconfig"; sourceTree = "<group>"; };
 		37E7FB256EBB51706185B5E7 /* Pods-Stockio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stockio.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stockio/Pods-Stockio.release.xcconfig"; sourceTree = "<group>"; };
 		954331E2E3A05F83DC49CA1D /* Pods_Stockio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stockio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA07A3EE1D4D55A3000B64C3 /* Stockio-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stockio-Bridging-Header.h"; sourceTree = "<group>"; };
 		DA3156CE1D3610B800144C74 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		DA3E76FA1D432C2900EC072E /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
@@ -45,7 +46,6 @@
 		DAE3B23E1D3197AD008072BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DAE3B2401D3197AD008072BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAE3B2461D3198EF008072BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		DAE3B2481D319907008072BF /* Stockio-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stockio-Bridging-Header.h"; sourceTree = "<group>"; };
 		DAE3B2491D319CAB008072BF /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,11 +81,11 @@
 		DAE3B2281D3197AD008072BF = {
 			isa = PBXGroup;
 			children = (
-				DAE3B2481D319907008072BF /* Stockio-Bridging-Header.h */,
 				DAE3B2331D3197AD008072BF /* Stockio */,
 				DAE3B2321D3197AD008072BF /* Products */,
 				AB051A6650AFD9DD4C23EACC /* Pods */,
 				60FB6009B925BC6649029A14 /* Frameworks */,
+				DA07A3EE1D4D55A3000B64C3 /* Stockio-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -368,6 +368,7 @@
 			baseConfigurationReference = 341A737A9E7D7B82EABFB807 /* Pods-Stockio.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Stockio/Info.plist;
@@ -375,6 +376,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.SYXH.Stockio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Stockio-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
 			name = Debug;
 		};
@@ -383,6 +387,7 @@
 			baseConfigurationReference = 37E7FB256EBB51706185B5E7 /* Pods-Stockio.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Stockio/Info.plist;
@@ -390,6 +395,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.SYXH.Stockio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Stockio-Bridging-Header.h";
+				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
 			name = Release;
 		};

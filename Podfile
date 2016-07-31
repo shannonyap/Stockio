@@ -16,5 +16,6 @@ pod 'FBSDKLoginKit'
 pod 'Pulsator'
 pod 'DrawerController'
 pod 'RAMReel'
+pod 'BEMSimpleLineGraph'
 
 end

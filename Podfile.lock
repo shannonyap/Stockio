@@ -1,4 +1,5 @@
 PODS:
+  - BEMSimpleLineGraph (4.1)
   - Bolts (1.7.0):
     - Bolts/AppLinks (= 1.7.0)
     - Bolts/Tasks (= 1.7.0)
@@ -66,6 +67,7 @@ PODS:
   - RAMReel (1.2.2)
 
 DEPENDENCIES:
+  - BEMSimpleLineGraph
   - DrawerController
   - FBSDKLoginKit
   - Firebase
@@ -77,6 +79,7 @@ DEPENDENCIES:
   - RAMReel
 
 SPEC CHECKSUMS:
+  BEMSimpleLineGraph: 44fd451f27f8e9cf96f2da5bea27603093576dd1
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   DrawerController: 8fd56e6238399a08c4af054fbea0ef8669cd81f3
   FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
@@ -97,6 +100,6 @@ SPEC CHECKSUMS:
   Pulsator: da87aa289b30b5e0cc7e03b21d9f2cb58277f601
   RAMReel: 85fbbc07a4e529bb71edb1b205a3b3c847f682cb
 
-PODFILE CHECKSUM: 253e95582a4327da1811d7316178d09bbee400eb
+PODFILE CHECKSUM: 1bf3a46c4ed3641973035e2010b6a47503e4e3b7
 
 COCOAPODS: 1.0.0

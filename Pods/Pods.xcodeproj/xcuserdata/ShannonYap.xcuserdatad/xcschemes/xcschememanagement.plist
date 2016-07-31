@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>BEMSimpleLineGraph.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,12 +47,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0C6DB11881A1DC6EEB1D6E45E174EF7D</key>
+		<key>0EB19C1377A747F81110D44E2D5FCF78</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0EB19C1377A747F81110D44E2D5FCF78</key>
+		<key>4C37FEDE79BAC5431A017E973027F4FE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,17 +67,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8249B75415A4700851F4AF4EC47CD1B1</key>
+		<key>78DD729E6F6BE3C1326232CD5DFFFBB7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A2F85A4DAF0D43C49CF8654B75903D2B</key>
+		<key>A21EB6955501BBF8808C76FB6F0580F3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>D083682CF36071495A66680CF5CE2BA5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FBB57EF9EB40737D48949450DC44C82C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
