@@ -29,7 +29,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.tableView.tableFooterView = UIView()
         self.tableView.separatorStyle = .None
-        self.tableView.allowsSelection = false
+       // self.tableView.allowsSelection = false
 
         // Do any additional setup after loading the view.
     }
@@ -212,6 +212,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         miniGraph.colorBottom = miniGraph.colorTop
         miniGraph.colorLine = lineColor
         miniGraph.dataValues = NSMutableArray(array: dataValues)
+        
         cell.addSubview(miniGraph)
     }
     
@@ -228,7 +229,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cellBorderLine = UIView(frame: CGRect(x: 0, y: self.view.bounds.size.height * 0.1, width: self.view.bounds.size.width * 0.95, height: 0.5))
         cellBorderLine.center.x = self.view.center.x
         cellBorderLine.backgroundColor = UIColor.grayColor()
-        
         cell.textLabel?.text = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyCode"]
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
         
@@ -258,6 +258,19 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             Constants.firebaseRef.child("users/\(self.uid)/watchlist/\(companyCode)").removeValue()
             tableView.reloadData()
         }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let stockGraphVC = UIStoryboard(name: "Main", bundle:nil).instantiateViewControllerWithIdentifier("StockGraphVC") as! StockGraphPageViewController
+        stockGraphVC.currentStockIndexPath = indexPath.row
+        stockGraphVC.listOfStocks = tableView.visibleCells
+        
+        for cell in stockGraphVC.listOfStocks {
+           let graph = cell.subviews.filter{$0 is BEMSimpleLineGraphView}.first as! BEMSimpleLineGraphView
+            stockGraphVC.setOfGraphData.append(graph.dataValues)
+        }
+        
+        self.presentViewController(UINavigationController.init(rootViewController: stockGraphVC), animated: true, completion: nil)
     }
     
     func numberOfPointsInLineGraph(graph: BEMSimpleLineGraphView) -> Int {

@@ -13,6 +13,8 @@
 		DA3E76FB1D432C2900EC072E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3E76FA1D432C2900EC072E /* SearchViewController.swift */; };
 		DA553AC11D3488D600CA2F80 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */; };
 		DA58E7231D40959400E6135F /* DailyDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */; };
+		DA5FA8D01D50519C00BF31F9 /* StockContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5FA8CF1D50519C00BF31F9 /* StockContentViewController.swift */; };
+		DA61D5DB1D4EB52600E7DAB4 /* StockPageGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA61D5DA1D4EB52600E7DAB4 /* StockPageGraphViewController.swift */; };
 		DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */; };
 		DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */; };
 		DACCC4881D31D51B00818B41 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = DACCC4871D31D51B00818B41 /* Fonts */; };
@@ -34,6 +36,8 @@
 		DA3E76FA1D432C2900EC072E /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyDashboardViewController.swift; sourceTree = "<group>"; };
+		DA5FA8CF1D50519C00BF31F9 /* StockContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockContentViewController.swift; sourceTree = "<group>"; };
+		DA61D5DA1D4EB52600E7DAB4 /* StockPageGraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockPageGraphViewController.swift; sourceTree = "<group>"; };
 		DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		DACCC4871D31D51B00818B41 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
@@ -106,6 +110,8 @@
 				DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */,
 				DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */,
 				DA3156CE1D3610B800144C74 /* MainViewController.swift */,
+				DA61D5DA1D4EB52600E7DAB4 /* StockPageGraphViewController.swift */,
+				DA5FA8CF1D50519C00BF31F9 /* StockContentViewController.swift */,
 				DA3E76FA1D432C2900EC072E /* SearchViewController.swift */,
 				DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */,
 				DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */,
@@ -250,8 +256,10 @@
 				DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */,
 				DAE027791D3DD49500F952FE /* SliderMenuViewController.swift in Sources */,
 				DA3E76FB1D432C2900EC072E /* SearchViewController.swift in Sources */,
+				DA61D5DB1D4EB52600E7DAB4 /* StockPageGraphViewController.swift in Sources */,
 				DA58E7231D40959400E6135F /* DailyDashboardViewController.swift in Sources */,
 				DAE3B2371D3197AD008072BF /* LoginViewController.swift in Sources */,
+				DA5FA8D01D50519C00BF31F9 /* StockContentViewController.swift in Sources */,
 				DA3156CF1D3610B800144C74 /* MainViewController.swift in Sources */,
 				DAE3B2351D3197AD008072BF /* AppDelegate.swift in Sources */,
 				DA553AC11D3488D600CA2F80 /* RegistrationViewController.swift in Sources */,
