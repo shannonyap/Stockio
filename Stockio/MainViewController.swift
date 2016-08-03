@@ -270,7 +270,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             stockGraphVC.setOfGraphData.append(graph.dataValues)
         }
         
-        self.presentViewController(UINavigationController.init(rootViewController: stockGraphVC), animated: true, completion: nil)
+        self.presentViewController(stockGraphVC, animated: true, completion: nil)
     }
     
     func numberOfPointsInLineGraph(graph: BEMSimpleLineGraphView) -> Int {

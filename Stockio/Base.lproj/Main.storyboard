@@ -53,8 +53,27 @@
                     <view key="view" contentMode="scaleToFill" id="h8j-5w-46E">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DZe-f1-XNJ">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="21"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="Title" id="EAa-ec-Bbr"/>
+                                </items>
+                            </navigationBar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="DZe-f1-XNJ" secondAttribute="trailing" id="8lR-4w-Gn3"/>
+                            <constraint firstItem="DZe-f1-XNJ" firstAttribute="leading" secondItem="h8j-5w-46E" secondAttribute="leading" id="S9q-Dh-teB"/>
+                            <constraint firstItem="DZe-f1-XNJ" firstAttribute="top" secondItem="1bT-GS-eVz" secondAttribute="bottom" id="kiE-FU-3fv"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="navBar" destination="DZe-f1-XNJ" id="lXX-P2-MjG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xqT-uF-j4W" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

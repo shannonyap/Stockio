@@ -374,6 +374,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
                 self.popUpLabel.text = mString;
                 self.popUpLabel.textAlignment = 1;
                 self.popUpLabel.numberOfLines = 1;
+                self.popUpLabel.adjustsFontSizeToFitWidth=YES;
                 self.popUpLabel.font = self.labelFont;
                 self.popUpLabel.backgroundColor = [UIColor clearColor];
                 [self.popUpLabel sizeToFit];
@@ -1434,7 +1435,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
         }
         NSNumber *value = dataPoints[index];
         NSString *formattedValue = [NSString stringWithFormat:self.formatStringForValues, value.doubleValue];
-        self.popUpLabel.text = [NSString stringWithFormat:@"%@%@%@", prefix, formattedValue, suffix];
+        self.popUpLabel.text = [value stringValue];
         self.popUpLabel.center = self.popUpView.center;
     }
 }

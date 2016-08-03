@@ -40,6 +40,10 @@ class StockGraphPageViewController: UIPageViewController, UIPageViewControllerDa
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+        if listOfStocks.count == 1 {
+            return nil
+        }
+        
         currentStockIndexPath = currentStockIndexPath + 1
         
         if currentStockIndexPath > listOfStocks.count - 1 {
@@ -52,6 +56,10 @@ class StockGraphPageViewController: UIPageViewController, UIPageViewControllerDa
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+        if listOfStocks.count == 1 {
+            return nil
+        }
+        
         currentStockIndexPath = currentStockIndexPath - 1
         
         if currentStockIndexPath < 0 {
