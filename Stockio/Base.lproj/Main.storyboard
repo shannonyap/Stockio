@@ -66,9 +66,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="DZe-f1-XNJ" secondAttribute="trailing" id="8lR-4w-Gn3"/>
-                            <constraint firstItem="DZe-f1-XNJ" firstAttribute="leading" secondItem="h8j-5w-46E" secondAttribute="leading" id="S9q-Dh-teB"/>
-                            <constraint firstItem="DZe-f1-XNJ" firstAttribute="top" secondItem="1bT-GS-eVz" secondAttribute="bottom" id="kiE-FU-3fv"/>
+                            <constraint firstItem="DZe-f1-XNJ" firstAttribute="top" secondItem="1bT-GS-eVz" secondAttribute="bottom" id="Csz-b3-zba"/>
+                            <constraint firstItem="DZe-f1-XNJ" firstAttribute="leading" secondItem="h8j-5w-46E" secondAttribute="leading" id="ZoI-UQ-F8d"/>
+                            <constraint firstAttribute="trailing" secondItem="DZe-f1-XNJ" secondAttribute="trailing" id="uCw-RQ-YLE"/>
                         </constraints>
                     </view>
                     <connections>

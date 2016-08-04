@@ -11,13 +11,12 @@ import UIKit
 class StockGraphPageViewController: UIPageViewController, UIPageViewControllerDataSource {
 
     var listOfStocks = []
+    var listOfCompanyNames = Array<String>()
     var currentStockIndexPath = -1
     var setOfGraphData = Array<NSMutableArray>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
-        
         let initialStockContentVC = getViewControllerAtIndex(currentStockIndexPath)
         let listOfViewControllers = NSArray(object: initialStockContentVC)
         self.setViewControllers(listOfViewControllers as? [UIViewController], direction: .Forward, animated: true, completion: nil)
@@ -33,7 +32,7 @@ class StockGraphPageViewController: UIPageViewController, UIPageViewControllerDa
     
     func getViewControllerAtIndex (index: Int) -> StockContentViewController {
         let contentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("StockContentVC") as! StockContentViewController
-        contentVC.stockName = listOfStocks[index].textLabel!!.text
+        contentVC.stockName = listOfCompanyNames[currentStockIndexPath]
         contentVC.fiveDayStockData = setOfGraphData[currentStockIndexPath]
         
         return contentVC

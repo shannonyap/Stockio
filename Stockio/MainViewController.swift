@@ -225,13 +225,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .Default, reuseIdentifier: "reuseIdentifier")
+        let cell = StockDataTableViewCell(style: .Default, reuseIdentifier: "reuseIdentifier")
         let cellBorderLine = UIView(frame: CGRect(x: 0, y: self.view.bounds.size.height * 0.1, width: self.view.bounds.size.width * 0.95, height: 0.5))
         cellBorderLine.center.x = self.view.center.x
         cellBorderLine.backgroundColor = UIColor.grayColor()
         cell.textLabel?.text = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyCode"]
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
-        
+        cell.companyName = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyName"]
+
         let priceChangeStatus = createPriceChangeStatusLabel(CGRect(x: self.view.bounds.size.width * 0.95 - cell.bounds.size.width * 0.175, y: 0, width: cell.bounds.size.width * 0.175, height: cell.bounds.size.height * 0.7), font: UIFont(name: "BebasNeueLight", size: cell.bounds.size.height * 0.5)!, center: self.view.bounds.size.height * 0.05, cornerRadius: cell.bounds.size.height * 0.1, companyCode: cell.textLabel!.text!, completion: { priceChangeLabel, data in
             self.createMiniGraph(CGRect(x: 0, y: 0, width: cell.bounds.size.width * 0.3, height: self.view.bounds.size.height * 0.095),lineColor: priceChangeLabel.backgroundColor!, cell: cell, dataValues: data)
         })
@@ -268,6 +269,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         for cell in stockGraphVC.listOfStocks {
            let graph = cell.subviews.filter{$0 is BEMSimpleLineGraphView}.first as! BEMSimpleLineGraphView
             stockGraphVC.setOfGraphData.append(graph.dataValues)
+            stockGraphVC.listOfCompanyNames.append((cell as! StockDataTableViewCell).companyName)
         }
         
         self.presentViewController(stockGraphVC, animated: true, completion: nil)

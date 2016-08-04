@@ -15,6 +15,7 @@
 		DA58E7231D40959400E6135F /* DailyDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */; };
 		DA5FA8D01D50519C00BF31F9 /* StockContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5FA8CF1D50519C00BF31F9 /* StockContentViewController.swift */; };
 		DA61D5DB1D4EB52600E7DAB4 /* StockPageGraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA61D5DA1D4EB52600E7DAB4 /* StockPageGraphViewController.swift */; };
+		DAC4311E1D51AE91007BE143 /* StockDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4311D1D51AE91007BE143 /* StockDataTableViewCell.swift */; };
 		DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */; };
 		DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */; };
 		DACCC4881D31D51B00818B41 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = DACCC4871D31D51B00818B41 /* Fonts */; };
@@ -38,6 +39,7 @@
 		DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyDashboardViewController.swift; sourceTree = "<group>"; };
 		DA5FA8CF1D50519C00BF31F9 /* StockContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockContentViewController.swift; sourceTree = "<group>"; };
 		DA61D5DA1D4EB52600E7DAB4 /* StockPageGraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockPageGraphViewController.swift; sourceTree = "<group>"; };
+		DAC4311D1D51AE91007BE143 /* StockDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockDataTableViewCell.swift; sourceTree = "<group>"; };
 		DACCC4831D31CFB000818B41 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		DACCC4841D31CFB000818B41 /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		DACCC4871D31D51B00818B41 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				DAE3B2341D3197AD008072BF /* AppDelegate.swift */,
 				DAE3B2361D3197AD008072BF /* LoginViewController.swift */,
 				DAE027781D3DD49500F952FE /* SliderMenuViewController.swift */,
+				DAC4311D1D51AE91007BE143 /* StockDataTableViewCell.swift */,
 				DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */,
 				DA58E7221D40959400E6135F /* DailyDashboardViewController.swift */,
 				DA3156CE1D3610B800144C74 /* MainViewController.swift */,
@@ -252,6 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAC4311E1D51AE91007BE143 /* StockDataTableViewCell.swift in Sources */,
 				DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */,
 				DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */,
 				DAE027791D3DD49500F952FE /* SliderMenuViewController.swift in Sources */,
