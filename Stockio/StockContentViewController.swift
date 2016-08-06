@@ -17,6 +17,10 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
     var stockCode: String!
     var fiveDayStockData: NSMutableArray = NSMutableArray()
     
+    @IBAction func dismissStockContentVC(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     @IBOutlet weak var navBar: UINavigationBar!
     
     override func viewDidLoad() {

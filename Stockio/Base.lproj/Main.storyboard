@@ -60,7 +60,14 @@
                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="21"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="Title" id="EAa-ec-Bbr"/>
+                                    <navigationItem title="Title" id="EAa-ec-Bbr">
+                                        <barButtonItem key="leftBarButtonItem" image="downIcon" id="HpD-yA-dZv">
+                                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="dismissStockContentVC:" destination="mew-HS-h0A" id="h4F-Mp-WZp"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
@@ -223,5 +230,6 @@
     </scenes>
     <resources>
         <image name="crossIcons" width="22" height="22"/>
+        <image name="downIcon" width="22" height="22"/>
     </resources>
 </document>
