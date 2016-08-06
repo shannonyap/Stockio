@@ -24,7 +24,7 @@ const CGFloat BEMNullGraphValue = CGFLOAT_MAX;
 typedef NS_ENUM(NSInteger, BEMInternalTags)
 {
     DotFirstTag100 = 100,
-    DotLastTag1000 = 1000,
+    DotLastTag1000 = 1000000,
     LabelYAxisTag2000 = 2000,
     BackgroundYAxisTag2100 = 2100,
     BackgroundXAxisTag2200 = 2200,
@@ -1322,7 +1322,6 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     closestDot = [self closestDotFromtouchInputLine:self.touchInputLine];
     closestDot.alpha = 0.8;
     
-    
     if (self.enablePopUpReport == YES && closestDot.tag >= DotFirstTag100 && closestDot.tag < DotLastTag1000 && [closestDot isKindOfClass:[BEMCircle class]] && self.alwaysDisplayPopUpLabels == NO) {
         [self setUpPopUpLabelAbovePoint:closestDot];
     }
@@ -1444,6 +1443,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
 
 - (BEMCircle *)closestDotFromtouchInputLine:(UIView *)touchInputLine {
     currentlyCloser = CGFLOAT_MAX;
+    
     for (BEMCircle *point in self.subviews) {
         if (point.tag >= DotFirstTag100 && point.tag < DotLastTag1000 && [point isMemberOfClass:[BEMCircle class]]) {
             if (self.alwaysDisplayDots == NO && self.displayDotsOnly == NO) {
