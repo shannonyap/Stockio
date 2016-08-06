@@ -10,10 +10,11 @@ import UIKit
 
 class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate {
 
+    var graphView = BEMSimpleLineGraphView()
     var dateLabel = UILabel()
     var stockPriceLabel = UILabel()
-    
     var stockName: String!
+    var stockCode: String!
     var fiveDayStockData: NSMutableArray = NSMutableArray()
     var completeDates: Array<String> = Array<String>()
     
@@ -34,14 +35,20 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
         self.dateLabel = createLabels(CGRect(x: 0, y: navBar.bounds.size.height + UIApplication.sharedApplication().statusBarFrame.size.height, width: self.view.bounds.size.width * 0.3, height: self.view.bounds.size.height * 0.05), font: UIFont(name: "Geomanist-Regular", size: 20.0)!, text: completeDates[0])
         self.stockPriceLabel = createLabels(CGRect(x: 0, y: self.dateLabel.frame.origin.y + self.dateLabel.bounds.size.height, width: self.view.bounds.size.width * 0.45, height: self.view.bounds.size.height * 0.075), font: UIFont(name: "BebasNeueRegular", size: 40.0)!, text: "$" + (fiveDayStockData[0] as! Dictionary<String, String>)["Value"]!)
         
-        let graphView = BEMSimpleLineGraphView(frame: CGRect(x: 0, y: self.stockPriceLabel.frame.origin.y + self.stockPriceLabel.bounds.size.height, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 0.45))
-        graphView.dataSource = self
-        graphView.delegate = self
-        graphView.dataValues = fiveDayStockData
-        graphView.enablePopUpReport = true
-        graphView.enableTouchReport = true
+        self.graphView = BEMSimpleLineGraphView(frame: CGRect(x: 0, y: self.stockPriceLabel.frame.origin.y + self.stockPriceLabel.bounds.size.height, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 0.45))
+        self.graphView.dataSource = self
+        self.graphView.delegate = self
+        self.graphView.dataValues = fiveDayStockData
+        self.graphView.enablePopUpReport = true
+        self.graphView.enableTouchReport = true
         
-        self.view.addSubview(graphView)
+        let maxGraphDurationSpanOptionList = UISegmentedControl(items: ["5D", "1M", "3M", "6M", "1Y", "5Y"])
+        maxGraphDurationSpanOptionList.frame = CGRect(x: 0, y: self.graphView.frame.origin.y + self.graphView.bounds.size.height + 1, width: self.view.bounds.size.width, height: self.view.bounds.size.height * 0.05)
+        maxGraphDurationSpanOptionList.selectedSegmentIndex = 0
+        maxGraphDurationSpanOptionList.addTarget(self, action: #selector(changeGraph(_:)), forControlEvents: .ValueChanged)
+        
+        self.view.addSubview(self.graphView)
+        self.view.addSubview(maxGraphDurationSpanOptionList)
         
         // Do any additional setup after loading the view.
     }
@@ -49,6 +56,74 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func changeGraph(sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            getStockDataWithTimeLapse(.Day, duration: -5, databaseEntry: "fiveDayStockData", completion: { data in
+                self.graphView.dataValues = data
+                self.graphView.reloadGraph()
+            })
+        } else if sender.selectedSegmentIndex == 1 {
+            getStockDataWithTimeLapse(.Month, duration: -1, databaseEntry: "oneMonthStockData", completion: { data in
+                self.graphView.dataValues = data
+                self.graphView.reloadGraph()
+            })
+        } else if sender.selectedSegmentIndex == 2 {
+            getStockDataWithTimeLapse(.Month, duration: -3, databaseEntry: "threeMonthStockData", completion: { data in
+                self.graphView.dataValues = data
+                self.graphView.reloadGraph()
+            })
+        } else if sender.selectedSegmentIndex == 3 {
+            getStockDataWithTimeLapse(.Month, duration: -6, databaseEntry: "sixMonthStockData", completion: { data in
+                self.graphView.dataValues = data
+                self.graphView.reloadGraph()
+            })
+        } else if sender.selectedSegmentIndex == 4 {
+            getStockDataWithTimeLapse(.Year, duration: -1, databaseEntry: "oneYearStockData", completion: { data in
+                self.graphView.dataValues = data
+                self.graphView.reloadGraph()
+            })
+        } else if sender.selectedSegmentIndex == 5 {
+            getStockDataWithTimeLapse(.Year, duration: -5, databaseEntry: "fiveYearStockData", completion: { data in
+                self.graphView.dataValues = data
+                self.graphView.reloadGraph()
+            })
+        }
+    }
+    
+    func getStockDataWithTimeLapse(calendarUnit: NSCalendarUnit, duration: Int, databaseEntry: String, completion: (data: NSMutableArray) -> Void){
+        let calendar = NSCalendar.currentCalendar()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        var latestStockDate = NSDate()
+        while calendar.isDateInWeekend(latestStockDate) {
+            latestStockDate = calendar.dateByAddingUnit(.Day, value: -1, toDate: latestStockDate, options: [])!
+        }
+        let endDate = dateFormatter.stringFromDate(latestStockDate)
+        let startDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(calendarUnit, value: duration, toDate: latestStockDate, options: [])!)
+        
+        let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/WIKI/" + stockCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                let stockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
+                
+                let stockDataForTimeLapse = NSMutableArray()
+                for dayStockData in stockData {
+                    stockDataForTimeLapse.addObject(["Date": String(dayStockData[0]), "Value": String(dayStockData[1])])
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    /* Add the timelapse data graph into the DB */
+                    Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(self.stockCode)/data/\(databaseEntry)").setValue(stockDataForTimeLapse)
+                    completion(data: stockDataForTimeLapse)
+                }
+            } catch {
+                print("error serializing JSON: \(error)")
+            }
+        }
+        
+        task.resume()
     }
     
     func createLabels(customFrame: CGRect, font: UIFont, text: String) -> UILabel {
@@ -76,7 +151,6 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
         self.stockPriceLabel.text = "$" + (graph.dataValues[index] as! Dictionary<String, String>)["Value"]!
         self.dateLabel.text = completeDates[index]
     }
-    
 
     /*
     // MARK: - Navigation

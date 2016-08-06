@@ -125,7 +125,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                     while calendar.isDateInWeekend(yesterday) {
                         yesterday = calendar.dateByAddingUnit(.Day, value: -1, toDate: yesterday, options: [])!
                     }
-                    
+
                     if parsingDateFormatter.stringFromDate(yesterday) == latestDateFromData {
                         let latestDayPriceChange = snapshot.value!["latestDayPriceChange"] as! String
                         dispatch_async(dispatch_get_main_queue()) {
@@ -154,7 +154,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             latestStockDate = calendar.dateByAddingUnit(.Day, value: -1, toDate: latestStockDate, options: [])!
         }
         let endDate = dateFormatter.stringFromDate(latestStockDate)
-        let startDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(.Day, value: -6, toDate: latestStockDate, options: [])!)
+        let startDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(.Day, value: -7, toDate: latestStockDate, options: [])!)
         
         let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/WIKI/" + companyCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
@@ -166,6 +166,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let latestClosePrice = json["dataset"]!!["data"]!![0][4] as! Float /* 4 denotes the position of the close price in the json data*/
                 
                 let fiveDayStockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
+                
                 self.miniGraphData = []
                 for dayStockData in fiveDayStockData {
                     self.miniGraphData.append(["Date": String(dayStockData[0]), "Value": String(dayStockData[1])])
@@ -270,6 +271,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
            let graph = cell.subviews.filter{$0 is BEMSimpleLineGraphView}.first as! BEMSimpleLineGraphView
             stockGraphVC.setOfGraphData.append(graph.dataValues)
             stockGraphVC.listOfCompanyNames.append((cell as! StockDataTableViewCell).companyName)
+            stockGraphVC.listOfCompanyCodes.append((cell as! StockDataTableViewCell).textLabel!.text!)
         }
         
         self.presentViewController(stockGraphVC, animated: true, completion: nil)

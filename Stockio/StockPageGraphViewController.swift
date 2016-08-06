@@ -12,6 +12,7 @@ class StockGraphPageViewController: UIPageViewController, UIPageViewControllerDa
 
     var listOfStocks = []
     var listOfCompanyNames = Array<String>()
+    var listOfCompanyCodes = Array<String>()
     var currentStockIndexPath = -1
     var setOfGraphData = Array<NSMutableArray>()
     
@@ -33,8 +34,9 @@ class StockGraphPageViewController: UIPageViewController, UIPageViewControllerDa
     func getViewControllerAtIndex (index: Int) -> StockContentViewController {
         let contentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("StockContentVC") as! StockContentViewController
         contentVC.stockName = listOfCompanyNames[currentStockIndexPath]
+        contentVC.stockCode = listOfCompanyCodes[currentStockIndexPath]
         contentVC.fiveDayStockData = setOfGraphData[currentStockIndexPath]
-        
+
         return contentVC
     }
     
