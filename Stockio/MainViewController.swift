@@ -285,12 +285,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let stockGraphVC = UIStoryboard(name: "Main", bundle:nil).instantiateViewControllerWithIdentifier("StockGraphVC") as! StockGraphPageViewController
         stockGraphVC.currentStockIndexPath = indexPath.row
         stockGraphVC.listOfStocks = tableView.visibleCells
+        stockGraphVC.list = "listOfCompanyNamesAndCodes"
+        stockGraphVC.dataSetName = "WIKI"
         
         for cell in stockGraphVC.listOfStocks {
-           let graph = cell.subviews.filter{$0 is BEMSimpleLineGraphView}.first as! BEMSimpleLineGraphView
+            let graph = cell.subviews.filter{$0 is BEMSimpleLineGraphView}.first as! BEMSimpleLineGraphView
             stockGraphVC.setOfGraphData.append(graph.dataValues)
             stockGraphVC.listOfCompanyNames.append((cell as! StockDataTableViewCell).companyName)
             stockGraphVC.listOfCompanyCodes.append((cell as! StockDataTableViewCell).textLabel!.text!)
+            stockGraphVC.stockKeyCode.append((cell as! StockDataTableViewCell).textLabel!.text!)
         }
         
         self.presentViewController(stockGraphVC, animated: true, completion: nil)

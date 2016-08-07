@@ -15,6 +15,9 @@ class StockGraphPageViewController: UIPageViewController, UIPageViewControllerDa
     var listOfCompanyCodes = Array<String>()
     var currentStockIndexPath = -1
     var setOfGraphData = Array<NSMutableArray>()
+    var list: String!
+    var dataSetName: String!
+    var stockKeyCode = Array<String>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +39,9 @@ class StockGraphPageViewController: UIPageViewController, UIPageViewControllerDa
         contentVC.stockName = listOfCompanyNames[currentStockIndexPath]
         contentVC.stockCode = listOfCompanyCodes[currentStockIndexPath]
         contentVC.fiveDayStockData = setOfGraphData[currentStockIndexPath]
-
+        contentVC.list = list
+        contentVC.dataSetName = dataSetName
+        contentVC.stockKeyCode = stockKeyCode[currentStockIndexPath]
         return contentVC
     }
     

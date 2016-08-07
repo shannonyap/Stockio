@@ -8,4 +8,5 @@
 
 class StockDataTableViewCell: UITableViewCell {
     var companyName: String!
+    var indexCode: String!
 }

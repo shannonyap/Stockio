@@ -15,6 +15,9 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
     var stockPriceLabel = UILabel()
     var stockName: String!
     var stockCode: String!
+    var list: String!
+    var dataSetName: String!
+    var stockKeyCode: String!
     var fiveDayStockData: NSMutableArray = NSMutableArray()
     
     @IBAction func dismissStockContentVC(sender: AnyObject) {
@@ -55,27 +58,27 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
     
     func changeGraph(sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
-            getStockDataWithTimeLapse(.Day, duration: -5, databaseEntry: "fiveDayStockData", completion: { data in
+            getStockDataWithTimeLapse(.Day, duration: -5, databaseEntry: "fiveDayStockData", list: list, dataSetName: dataSetName, completion: { data in
                 self.setDataAndReloadGraph(data)
             })
         } else if sender.selectedSegmentIndex == 1 {
-            getStockDataWithTimeLapse(.Month, duration: -1, databaseEntry: "oneMonthStockData", completion: { data in
+            getStockDataWithTimeLapse(.Month, duration: -1, databaseEntry: "oneMonthStockData", list: list, dataSetName: dataSetName, completion: { data in
                 self.setDataAndReloadGraph(data)
             })
         } else if sender.selectedSegmentIndex == 2 {
-            getStockDataWithTimeLapse(.Month, duration: -3, databaseEntry: "threeMonthStockData", completion: { data in
+            getStockDataWithTimeLapse(.Month, duration: -3, databaseEntry: "threeMonthStockData", list: list, dataSetName: dataSetName, completion: { data in
                 self.setDataAndReloadGraph(data)
             })
         } else if sender.selectedSegmentIndex == 3 {
-            getStockDataWithTimeLapse(.Month, duration: -6, databaseEntry: "sixMonthStockData", completion: { data in
+            getStockDataWithTimeLapse(.Month, duration: -6, databaseEntry: "sixMonthStockData", list: list, dataSetName: dataSetName, completion: { data in
                 self.setDataAndReloadGraph(data)
             })
         } else if sender.selectedSegmentIndex == 4 {
-            getStockDataWithTimeLapse(.Year, duration: -1, databaseEntry: "oneYearStockData", completion: { data in
+            getStockDataWithTimeLapse(.Year, duration: -1, databaseEntry: "oneYearStockData", list: list, dataSetName: dataSetName, completion: { data in
                 self.setDataAndReloadGraph(data)
             })
         } else if sender.selectedSegmentIndex == 5 {
-            getStockDataWithTimeLapse(.Year, duration: -5, databaseEntry: "fiveYearStockData", completion: { data in
+            getStockDataWithTimeLapse(.Year, duration: -5, databaseEntry: "fiveYearStockData", list: list, dataSetName: dataSetName, completion: { data in
                 self.setDataAndReloadGraph(data)
             })
         }
@@ -86,7 +89,7 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
         self.graphView.reloadGraph()
     }
     
-    func getStockDataWithTimeLapse(calendarUnit: NSCalendarUnit, duration: Int, databaseEntry: String, completion: (data: NSMutableArray) -> Void){
+    func getStockDataWithTimeLapse(calendarUnit: NSCalendarUnit, duration: Int, databaseEntry: String, list: String, dataSetName: String, completion: (data: NSMutableArray) -> Void){
         let calendar = NSCalendar.currentCalendar()
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -97,9 +100,9 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
         let endDate = dateFormatter.stringFromDate(latestStockDate)
         let startDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(calendarUnit, value: duration, toDate: latestStockDate, options: [])!)
         
-        Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(stockCode)/data/\(databaseEntry)").observeSingleEventOfType(.Value, withBlock:  { snapshot in
+        Constants.firebaseRef.child("\(list)/\(stockKeyCode)/data/\(databaseEntry)").observeSingleEventOfType(.Value, withBlock:  { snapshot in
             if !snapshot.exists() {
-                let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/WIKI/" + self.stockCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
+                let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(dataSetName)/" + self.stockCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
                 let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
                     do {
                         let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
@@ -111,7 +114,7 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
                         }
                         dispatch_async(dispatch_get_main_queue()) {
                             /* Add the timelapse data graph into the DB */
-                            Constants.firebaseRef.child("listOfCompanyNamesAndCodes/\(self.stockCode)/data/\(databaseEntry)").setValue(stockDataForTimeLapse)
+                            Constants.firebaseRef.child("\(list)/\(self.stockKeyCode)/data/\(databaseEntry)").setValue(stockDataForTimeLapse)
                             completion(data: stockDataForTimeLapse)
                         }
                     } catch {
