@@ -105,17 +105,33 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
                 let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(dataSetName)/" + self.stockCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
                 let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
                     do {
-                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                        let stockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
+                        var json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                        var stockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
                         
-                        let stockDataForTimeLapse = NSMutableArray()
-                        for dayStockData in stockData {
-                            stockDataForTimeLapse.addObject(["Date": String(dayStockData[0]), "Value": String(dayStockData[1])])
-                        }
-                        dispatch_async(dispatch_get_main_queue()) {
-                            /* Add the timelapse data graph into the DB */
-                            Constants.firebaseRef.child("\(list)/\(self.stockKeyCode)/data/\(databaseEntry)").setValue(stockDataForTimeLapse)
-                            completion(data: stockDataForTimeLapse)
+                        if stockData.isEmpty {
+                            let initialDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(calendarUnit, value: duration, toDate: dateFormatter.dateFromString(json["dataset"]!!["newest_available_date"] as! String)!, options: [])!)
+                            let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(dataSetName)/" + self.stockCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(initialDate)&end_date=\(json["dataset"]!!["newest_available_date"] as! String)")
+                            
+                            let newTask = NSURLSession.sharedSession().dataTaskWithURL(url!) { (data, response, error) in
+                                do {
+                                    json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                                    stockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        /* Add the timelapse data graph into the DB */
+                                        Constants.firebaseRef.child("\(list)/\(self.stockKeyCode)/data/\(databaseEntry)").setValue(self.getStockDataForTimeLapse(stockData))
+                                        completion(data: self.getStockDataForTimeLapse(stockData))
+                                    }
+                                } catch {
+                                    print("error serializing JSON: \(error)")
+                                }
+                            }
+                            newTask.resume()
+                        } else {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                /* Add the timelapse data graph into the DB */
+                                Constants.firebaseRef.child("\(list)/\(self.stockKeyCode)/data/\(databaseEntry)").setValue(self.getStockDataForTimeLapse(stockData))
+                                completion(data: self.getStockDataForTimeLapse(stockData))
+                            }
                         }
                     } catch {
                         print("error serializing JSON: \(error)")
@@ -126,6 +142,15 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
                 completion(data: snapshot.value as! NSMutableArray)
             }
         })
+    }
+    
+    func getStockDataForTimeLapse(stockData: ReverseRandomAccessCollection<(Array<NSArray>)>) -> NSMutableArray {
+        let stockDataForTimeLapse = NSMutableArray()
+        for dayStockData in stockData {
+            stockDataForTimeLapse.addObject(["Date": String(dayStockData[0]), "Value": String(dayStockData[1])])
+        }
+        
+        return stockDataForTimeLapse
     }
     
     func createLabels(customFrame: CGRect, font: UIFont, text: String) -> UILabel {

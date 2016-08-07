@@ -291,6 +291,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         for cell in stockGraphVC.listOfStocks {
             let graph = cell.subviews.filter{$0 is BEMSimpleLineGraphView}.first as! BEMSimpleLineGraphView
             stockGraphVC.setOfGraphData.append(graph.dataValues)
+            if self.tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text == (cell as! StockDataTableViewCell).textLabel!.text! {
+                stockGraphVC.currentStockIndexPath = stockGraphVC.listOfStocks.indexOfObject(cell)
+            }
             stockGraphVC.listOfCompanyNames.append((cell as! StockDataTableViewCell).companyName)
             stockGraphVC.listOfCompanyCodes.append((cell as! StockDataTableViewCell).textLabel!.text!)
             stockGraphVC.stockKeyCode.append((cell as! StockDataTableViewCell).textLabel!.text!)

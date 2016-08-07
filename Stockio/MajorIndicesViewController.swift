@@ -42,12 +42,14 @@ class MajorIndicesViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let stockGraphVC = UIStoryboard(name: "Main", bundle:nil).instantiateViewControllerWithIdentifier("StockGraphVC") as! StockGraphPageViewController
-        stockGraphVC.currentStockIndexPath = indexPath.row
         stockGraphVC.listOfStocks = tableView.visibleCells
         stockGraphVC.list = "listOfIndices"
         stockGraphVC.dataSetName = ""
         
         for cell in stockGraphVC.listOfStocks {
+            if self.tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text == (cell as! StockDataTableViewCell).textLabel!.text! {
+                stockGraphVC.currentStockIndexPath = stockGraphVC.listOfStocks.indexOfObject(cell)
+            }
             let graph = cell.subviews.filter{$0 is BEMSimpleLineGraphView}.first as! BEMSimpleLineGraphView
             stockGraphVC.setOfGraphData.append(graph.dataValues)
             stockGraphVC.listOfCompanyNames.append((cell as! StockDataTableViewCell).companyName)
