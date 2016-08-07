@@ -145,6 +145,39 @@
             </objects>
             <point key="canvasLocation" x="811" y="-679"/>
         </scene>
+        <!--Major Indices View Controller-->
+        <scene sceneID="fKh-rr-FcE">
+            <objects>
+                <viewController storyboardIdentifier="majorIndicesVC" id="pV0-Zp-3xg" customClass="MajorIndicesViewController" customModule="Stockio" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1Nf-do-9iw"/>
+                        <viewControllerLayoutGuide type="bottom" id="pWT-fG-KAg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ros-bd-bpO">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IGX-XN-8Z1">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="IGX-XN-8Z1" firstAttribute="top" secondItem="Ros-bd-bpO" secondAttribute="top" id="6q3-rv-nwL"/>
+                            <constraint firstAttribute="trailing" secondItem="IGX-XN-8Z1" secondAttribute="trailing" id="Exm-j3-dtz"/>
+                            <constraint firstItem="IGX-XN-8Z1" firstAttribute="leading" secondItem="Ros-bd-bpO" secondAttribute="leading" id="XRe-07-lno"/>
+                            <constraint firstItem="IGX-XN-8Z1" firstAttribute="bottom" secondItem="pWT-fG-KAg" secondAttribute="top" id="lai-Jg-Tqq"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="IGX-XN-8Z1" id="QQq-LC-ZaB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sLc-EH-kAE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1526" y="-940"/>
+        </scene>
         <!--Login View Controller-->
         <scene sceneID="rRz-li-vQO">
             <objects>
@@ -208,24 +241,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-166" y="180"/>
-        </scene>
-        <!--Daily Dashboard View Controller-->
-        <scene sceneID="MGu-Jz-bCV">
-            <objects>
-                <viewController storyboardIdentifier="dailyDashboardVC" id="Z9m-t5-yVa" customClass="DailyDashboardViewController" customModule="Stockio" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="28k-ED-q0Z"/>
-                        <viewControllerLayoutGuide type="bottom" id="Cnj-Cg-cJq"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8oL-qP-J1R">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0Uj-lg-6Gb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1188" y="74"/>
         </scene>
     </scenes>
     <resources>

@@ -11,7 +11,7 @@ import UIKit
 class SliderMenuViewController: UITableViewController {
     
     var uid: String = ""
-    let slideMenuTabs: Array = ["Watchlist", "Daily Dashboard", "Sign Out"]
+    let slideMenuTabs: Array = ["Watchlist", "Major Indices", "Sign Out"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,10 +101,10 @@ class SliderMenuViewController: UITableViewController {
                 self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: mainVC), withFullCloseAnimation: true, completion: nil)
             }
         } else if indexPath.row == 2 {
-            if title == "Daily Dashboard" {
+            if title == "Major Indices" {
                 self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
             } else {
-                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("dailyDashboardVC")), withFullCloseAnimation: true, completion: nil)
+                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("majorIndicesVC")), withFullCloseAnimation: true, completion: nil)
             }
         } else if indexPath.row == tableView.numberOfRowsInSection(0) - 1 {
             self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: { (true) in
