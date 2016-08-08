@@ -27,6 +27,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     var closeButton = UIButton()
     var circleLoadingPathLayer = CAShapeLayer()
     
+    var financialType: String!
+    var list: String!
+    var firebaseName: String!
+    var firebaseCode: String!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -54,7 +59,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
             }
         
             self.dataSource = SimplePrefixQueryDataSource(self.listOfCompanyNames)
-            self.ramReel = RAMReel(frame: self.view.bounds, dataSource: self.dataSource, placeholder: "Type in a company's name") {
+            self.ramReel = RAMReel(frame: self.view.bounds, dataSource: self.dataSource, placeholder: "Type in a \(self.financialType)'s name") {
                 let chosenCompany = $0
                 if self.setOfCompanyNames.contains(chosenCompany) {
                     if !self.addToWatchListButton.isDescendantOfView(self.view) {
@@ -62,9 +67,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
                     }
                     UIView.animateWithDuration(0.7, delay: 0, options: .CurveEaseInOut, animations:  {
                         self.addToWatchListButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
-                    Constants.firebaseRef.child("listOfCompanyNamesAndCodes").observeEventType(.ChildAdded, withBlock: { snapshot in
-                        if snapshot.value!["companyName"] as! String == chosenCompany {
-                            self.selectedCompany = [snapshot.value!["companyCode"] as! String: ["companyName": snapshot.value!["companyName"] as! String, "companyCode": snapshot.value!["companyCode"] as! String]]
+                    Constants.firebaseRef.child("\(self.list)").observeEventType(.ChildAdded, withBlock: { snapshot in
+                        if snapshot.value!["\(self.firebaseName)"] as! String == chosenCompany {
+                            self.selectedCompany = [snapshot.value!["\(self.firebaseCode)"] as! String: ["\(self.firebaseName)": snapshot.value!["\(self.firebaseName)"] as! String, "\(self.firebaseCode)": snapshot.value!["\(self.firebaseCode)"] as! String]]
                         }
                     })
                 } else {
@@ -113,7 +118,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
         button.addTarget(self, action: #selector(exitToMainVC(_:)), forControlEvents: (UIControlEvents.TouchUpOutside))
         if type == "addToWatchList" {
             button.center.x = self.view.center.x
-            button.setTitle("Add to Watchlist", forState: UIControlState.Normal)
+            button.setTitle("Add", forState: UIControlState.Normal)
             button.titleLabel?.font = UIFont(name: "FjallaOne", size: 12.0)
             button.backgroundColor = UIColor.grayColor()
         } else {
@@ -138,9 +143,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     func getAllCompanyNames(completion: (companyNameList: [String]) -> Void) {
         var counter: UInt = 0
-        Constants.firebaseRef.child("listOfCompanyNamesAndCodes").observeSingleEventOfType(.Value, withBlock: { snapshot in
-            Constants.firebaseRef.child("listOfCompanyNamesAndCodes").observeEventType(.ChildAdded, withBlock: { realSnapshot in
-                self.listOfCompanyNames.append(realSnapshot.value!["companyName"] as! String)
+        Constants.firebaseRef.child("\(list)").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            Constants.firebaseRef.child("\(self.list)").observeEventType(.ChildAdded, withBlock: { realSnapshot in
+                self.listOfCompanyNames.append(realSnapshot.value!["\(self.firebaseName)"] as! String)
                 counter += 1
                 if counter == snapshot.childrenCount  {
                     completion(companyNameList: self.listOfCompanyNames)

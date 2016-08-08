@@ -26,6 +26,7 @@
 		DAE3B23F1D3197AD008072BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B23D1D3197AD008072BF /* LaunchScreen.storyboard */; };
 		DAE3B2471D3198EF008072BF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B2461D3198EF008072BF /* GoogleService-Info.plist */; };
 		DAE3B24A1D319CAB008072BF /* Images in Resources */ = {isa = PBXBuildFile; fileRef = DAE3B2491D319CAB008072BF /* Images */; };
+		DAFF7EAE1D57EC80009D0842 /* MutualFundsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF7EAD1D57EC80009D0842 /* MutualFundsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		DAE3B2401D3197AD008072BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DAE3B2461D3198EF008072BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DAE3B2491D319CAB008072BF /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
+		DAFF7EAD1D57EC80009D0842 /* MutualFundsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualFundsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				DA553AC01D3488D600CA2F80 /* RegistrationViewController.swift */,
 				DAB9319C1D56956A0048AF37 /* MajorIndicesViewController.swift */,
 				DA3156CE1D3610B800144C74 /* MainViewController.swift */,
+				DAFF7EAD1D57EC80009D0842 /* MutualFundsViewController.swift */,
 				DA61D5DA1D4EB52600E7DAB4 /* StockPageGraphViewController.swift */,
 				DA5FA8CF1D50519C00BF31F9 /* StockContentViewController.swift */,
 				DA3E76FA1D432C2900EC072E /* SearchViewController.swift */,
@@ -257,6 +260,7 @@
 			files = (
 				DAC4311E1D51AE91007BE143 /* StockDataTableViewCell.swift in Sources */,
 				DACCC4851D31CFB000818B41 /* FloatLabelTextField.swift in Sources */,
+				DAFF7EAE1D57EC80009D0842 /* MutualFundsViewController.swift in Sources */,
 				DACCC4861D31CFB000818B41 /* FloatLabelTextView.swift in Sources */,
 				DAE027791D3DD49500F952FE /* SliderMenuViewController.swift in Sources */,
 				DAB9319D1D56956A0048AF37 /* MajorIndicesViewController.swift in Sources */,

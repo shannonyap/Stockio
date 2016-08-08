@@ -86,6 +86,39 @@
             </objects>
             <point key="canvasLocation" x="906" y="-1696"/>
         </scene>
+        <!--Mutual Funds View Controller-->
+        <scene sceneID="ATn-SE-P4W">
+            <objects>
+                <viewController storyboardIdentifier="mutualFundsVC" id="RoT-qf-sJG" customClass="MutualFundsViewController" customModule="Stockio" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Peb-p3-Ari"/>
+                        <viewControllerLayoutGuide type="bottom" id="fkh-aS-RRj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8lB-ln-Sat">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="oNc-4A-aXh">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="oNc-4A-aXh" firstAttribute="bottom" secondItem="fkh-aS-RRj" secondAttribute="top" id="0YB-gR-pQL"/>
+                            <constraint firstItem="oNc-4A-aXh" firstAttribute="top" secondItem="8lB-ln-Sat" secondAttribute="top" id="Dho-Ng-S37"/>
+                            <constraint firstItem="oNc-4A-aXh" firstAttribute="leading" secondItem="8lB-ln-Sat" secondAttribute="leading" id="MVI-hM-yRj"/>
+                            <constraint firstAttribute="trailing" secondItem="oNc-4A-aXh" secondAttribute="trailing" id="dCd-v5-lGr"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="oNc-4A-aXh" id="3NY-gJ-hay"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cHF-vZ-2Li" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1690" y="-1825"/>
+        </scene>
         <!--Stock Graph Page View Controller-->
         <scene sceneID="pGL-jx-IcH">
             <objects>

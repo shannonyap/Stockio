@@ -17,7 +17,6 @@ class MajorIndicesViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         initTableViewDelegatePresets(self.tableView, tableViewDataSource: self, viewController: self, title: "Major Indices")
-        
         // Do any additional setup after loading the view.
     }
 

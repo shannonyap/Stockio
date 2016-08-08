@@ -11,7 +11,7 @@ import UIKit
 class SliderMenuViewController: UITableViewController {
     
     var uid: String = ""
-    let slideMenuTabs: Array = ["Watchlist", "Major Indices", "Sign Out"]
+    let slideMenuTabs: Array = ["Watchlist", "Major Indices", "Mutual Funds", "Sign Out"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,7 @@ class SliderMenuViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 4
+        return 5
     }
 
     
@@ -105,6 +105,14 @@ class SliderMenuViewController: UITableViewController {
                 self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
             } else {
                 self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("majorIndicesVC")), withFullCloseAnimation: true, completion: nil)
+            }
+        } else if indexPath.row == 3 {
+            if title == "Mutual Funds" {
+                self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
+            } else {
+                let mutualFundsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("mutualFundsVC") as! MutualFundsViewController
+                mutualFundsVC.uid = uid
+                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: mutualFundsVC), withFullCloseAnimation: true, completion: nil)
             }
         } else if indexPath.row == tableView.numberOfRowsInSection(0) - 1 {
             self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: { (true) in

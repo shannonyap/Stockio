@@ -164,6 +164,9 @@ extension UITableViewDelegate {
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, searchViewControllerDataDelegate, BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate {
     
     var uid: String = ""
+    var list: String! = "listOfCompanyNamesAndCodes"
+    var dataSetName: String! = "WIKI"
+    
     @IBOutlet weak var tableView: UITableView!
     
     var dictionaryOfCompanies = Dictionary<String, Dictionary<String, String>>()
@@ -231,6 +234,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     func didSelectSearchBarButtonItem(sender: UIBarButtonItem) {
         let searchVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("searchVC") as! SearchViewController
         searchVC.delegate = self
+        searchVC.list = list
+        searchVC.financialType = "company"
+        searchVC.firebaseName = "companyName"
+        searchVC.firebaseCode = "companyCode"
         self.presentViewController(searchVC, animated: true, completion: nil)
     }
     
@@ -253,7 +260,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
         cell.companyName = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyName"]
 
-        let priceChangeStatus = createPriceChangeStatusLabel(CGRect(x: self.view.bounds.size.width * 0.95 - cell.bounds.size.width * 0.175, y: 0, width: cell.bounds.size.width * 0.175, height: cell.bounds.size.height * 0.7), font: UIFont(name: "BebasNeueLight", size: cell.bounds.size.height * 0.5)!, center: self.view.bounds.size.height * 0.05, cornerRadius: cell.bounds.size.height * 0.1, companyCode: cell.textLabel!.text!, companyKeyCode: cell.textLabel!.text!, list: "listOfCompanyNamesAndCodes", databaseName: "WIKI", miniGraphData: self.miniGraphData, completion: { priceChangeLabel, data in
+        let priceChangeStatus = createPriceChangeStatusLabel(CGRect(x: self.view.bounds.size.width * 0.95 - cell.bounds.size.width * 0.175, y: 0, width: cell.bounds.size.width * 0.175, height: cell.bounds.size.height * 0.7), font: UIFont(name: "BebasNeueLight", size: cell.bounds.size.height * 0.5)!, center: self.view.bounds.size.height * 0.05, cornerRadius: cell.bounds.size.height * 0.1, companyCode: cell.textLabel!.text!, companyKeyCode: cell.textLabel!.text!, list: list, databaseName: dataSetName, miniGraphData: self.miniGraphData, completion: { priceChangeLabel, data in
             self.miniGraphData = data
             self.createMiniGraph(CGRect(x: 0, y: 0, width: cell.bounds.size.width * 0.3, height: self.view.bounds.size.height * 0.095),lineColor: priceChangeLabel.backgroundColor!, cell: cell, dataValues: self.miniGraphData, view: self.view, dataSource: self, delegate: self)
         })
@@ -285,8 +292,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let stockGraphVC = UIStoryboard(name: "Main", bundle:nil).instantiateViewControllerWithIdentifier("StockGraphVC") as! StockGraphPageViewController
         stockGraphVC.currentStockIndexPath = indexPath.row
         stockGraphVC.listOfStocks = tableView.visibleCells
-        stockGraphVC.list = "listOfCompanyNamesAndCodes"
-        stockGraphVC.dataSetName = "WIKI"
+        stockGraphVC.list = list
+        stockGraphVC.dataSetName = dataSetName
         
         for cell in stockGraphVC.listOfStocks {
             let graph = cell.subviews.filter{$0 is BEMSimpleLineGraphView}.first as! BEMSimpleLineGraphView
