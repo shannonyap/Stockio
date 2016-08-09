@@ -79,15 +79,14 @@ extension UITableViewDelegate {
         let endDate = dateFormatter.stringFromDate(latestStockDate)
         let startDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(.Day, value: -7, toDate: latestStockDate, options: [])!)
         
-        let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(databaseName)/\(companyCode).json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
-        
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+        let url = getQuandlURL(list, databaseName: databaseName, companyCode: companyCode, startDate: startDate, endDate: endDate)
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url) {(data, response, error) in
             do {
                 let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                 if (json["dataset"]!!["data"] as! NSArray).count == 0 {
                     let lastWeekDate =  dateFormatter.stringFromDate(calendar.dateByAddingUnit(.Day, value: -7, toDate: dateFormatter.dateFromString((json["dataset"]!!["newest_available_date"]) as! String)!, options: [])!)
-                    let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(databaseName)/\(companyCode).json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(lastWeekDate)&end_date=\(json["dataset"]!!["newest_available_date"] as! String)")
-                    let newTask = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+                    let url = self.getQuandlURL(list, databaseName: databaseName, companyCode: companyCode, startDate: lastWeekDate, endDate: json["dataset"]!!["newest_available_date"] as! String)
+                    let newTask = NSURLSession.sharedSession().dataTaskWithURL(url) {(data, response, error) in
                         do {
                             let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                             
@@ -113,6 +112,17 @@ extension UITableViewDelegate {
         }
         
         task.resume()
+    }
+    
+    func getQuandlURL(list: String, databaseName: String, companyCode: String, startDate: String, endDate: String) -> NSURL {
+        var url = NSURL()
+        if list == "listOfMutualFunds" {
+            url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(databaseName)/\("YAHOO/FUND_" + companyCode).json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")!
+        } else {
+            url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(databaseName)/\(companyCode).json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")!
+        }
+        
+        return url
     }
     
     func populateWithGraphDataValues(jsonResult: Array<NSArray>) -> Array<Dictionary<String, String>> {
@@ -164,8 +174,12 @@ extension UITableViewDelegate {
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, searchViewControllerDataDelegate, BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate {
     
     var uid: String = ""
-    var list: String! = "listOfCompanyNamesAndCodes"
-    var dataSetName: String! = "WIKI"
+    var list: String! = ""
+    var dataSetName: String! = ""
+    var watchlistName: String! = ""
+    var financialType = ""
+    var firebaseName = ""
+    var firebaseCode = ""
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -176,7 +190,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initTableViewDelegatePresets(self.tableView, tableViewDataSource: self, viewController: self, title: "Watchlist")
+        initTableViewDelegatePresets(self.tableView, tableViewDataSource: self, viewController: self, title: watchlistName)
         addSearchBarButtonItem()
 
         // Do any additional setup after loading the view.
@@ -187,8 +201,18 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Dispose of any resources that can be recreated.
     }
     
+    func initValues(uid: String, list: String, dataSetName: String, watchlistName: String, financialType: String, firebaseName: String, firebaseCode: String) {
+        self.uid = uid
+        self.list = list
+        self.dataSetName = dataSetName
+        self.watchlistName = watchlistName
+        self.financialType = financialType
+        self.firebaseName = firebaseName
+        self.firebaseCode = firebaseCode
+    }
+    
     override func viewWillAppear(animated: Bool) {
-        Constants.firebaseRef.child("users/\(uid)/watchlist").observeSingleEventOfType(.Value, withBlock: { snapshot in
+        Constants.firebaseRef.child("users/\(uid)/\(watchlistName)").observeSingleEventOfType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
                 self.dictionaryOfCompanies = snapshot.value as! Dictionary<String, Dictionary<String, String>>
                 self.setOfCompanyNames = []
@@ -212,7 +236,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillDisappear(animated: Bool) {
         if dictionaryOfCompanies.count != 0 {
-            Constants.firebaseRef.child("users/\(uid)/watchlist").setValue(dictionaryOfCompanies)
+            Constants.firebaseRef.child("users/\(uid)/\(watchlistName)").setValue(dictionaryOfCompanies)
         }
     }
     
@@ -235,15 +259,21 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let searchVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("searchVC") as! SearchViewController
         searchVC.delegate = self
         searchVC.list = list
-        searchVC.financialType = "company"
-        searchVC.firebaseName = "companyName"
-        searchVC.firebaseCode = "companyCode"
+        searchVC.financialType = financialType
+        searchVC.firebaseName = firebaseName
+        searchVC.firebaseCode = firebaseCode
         self.presentViewController(searchVC, animated: true, completion: nil)
     }
     
     func sendCompanyNameToMainVC(companyName: Dictionary<String, Dictionary<String, String>>) {
-        self.dictionaryOfCompanies[companyName.keys.first!] = companyName[companyName.keys.first!]
-        Constants.firebaseRef.child("users/\(uid)/watchlist/\(companyName.keys.first!)").setValue(companyName[companyName.keys.first!])
+        if financialType == "Mutual Fund" {
+            let correctedMutualFundKey = companyName.keys.first!.componentsSeparatedByString("_")[1]
+            self.dictionaryOfCompanies[correctedMutualFundKey] = companyName[companyName.keys.first!]
+            Constants.firebaseRef.child("users/\(uid)/\(watchlistName)/\(correctedMutualFundKey)").setValue(companyName[companyName.keys.first!])
+        } else {
+            self.dictionaryOfCompanies[companyName.keys.first!] = companyName[companyName.keys.first!]
+            Constants.firebaseRef.child("users/\(uid)/\(watchlistName)/\(companyName.keys.first!)").setValue(companyName[companyName.keys.first!])
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -256,9 +286,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = StockDataTableViewCell(style: .Default, reuseIdentifier: "reuseIdentifier")
-        cell.textLabel?.text = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyCode"]
+        if financialType == "Mutual Fund" {
+            var trueIndexCode: String! = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]![firebaseCode]
+            trueIndexCode = trueIndexCode.componentsSeparatedByString("_")[1]
+            cell.textLabel?.text = trueIndexCode
+        } else {
+            cell.textLabel?.text = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]![firebaseCode]
+        }
         cell.textLabel?.font = UIFont(name: "Genome-Thin", size: 17.5)
-        cell.companyName = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]!["companyName"]
+        cell.companyName = dictionaryOfCompanies[self.setOfCompanyNames[indexPath.row]]![firebaseName]
 
         let priceChangeStatus = createPriceChangeStatusLabel(CGRect(x: self.view.bounds.size.width * 0.95 - cell.bounds.size.width * 0.175, y: 0, width: cell.bounds.size.width * 0.175, height: cell.bounds.size.height * 0.7), font: UIFont(name: "BebasNeueLight", size: cell.bounds.size.height * 0.5)!, center: self.view.bounds.size.height * 0.05, cornerRadius: cell.bounds.size.height * 0.1, companyCode: cell.textLabel!.text!, companyKeyCode: cell.textLabel!.text!, list: list, databaseName: dataSetName, miniGraphData: self.miniGraphData, completion: { priceChangeLabel, data in
             self.miniGraphData = data
@@ -283,7 +319,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             let companyCode = self.setOfCompanyNames[indexPath.row]
             self.dictionaryOfCompanies.removeValueForKey(self.setOfCompanyNames[indexPath.row])
             self.setOfCompanyNames.removeAtIndex(indexPath.row)
-            Constants.firebaseRef.child("users/\(self.uid)/watchlist/\(companyCode)").removeValue()
+            Constants.firebaseRef.child("users/\(self.uid)/\(watchlistName)/\(companyCode)").removeValue()
             tableView.reloadData()
         }
     }

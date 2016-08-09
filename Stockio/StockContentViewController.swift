@@ -102,17 +102,16 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
         
         Constants.firebaseRef.child("\(list)/\(stockKeyCode)/data/\(databaseEntry)").observeSingleEventOfType(.Value, withBlock:  { snapshot in
             if !snapshot.exists() {
-                let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(dataSetName)/" + self.stockCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")
-                let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+                let url = self.getQuandlURL(list, databaseName: dataSetName, companyCode: self.stockCode, startDate: startDate, endDate: endDate)
+                let task = NSURLSession.sharedSession().dataTaskWithURL(url) {(data, response, error) in
                     do {
                         var json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                         var stockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
                         
                         if stockData.isEmpty {
                             let initialDate = dateFormatter.stringFromDate(calendar.dateByAddingUnit(calendarUnit, value: duration, toDate: dateFormatter.dateFromString(json["dataset"]!!["newest_available_date"] as! String)!, options: [])!)
-                            let url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(dataSetName)/" + self.stockCode + ".json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(initialDate)&end_date=\(json["dataset"]!!["newest_available_date"] as! String)")
-                            
-                            let newTask = NSURLSession.sharedSession().dataTaskWithURL(url!) { (data, response, error) in
+                            let url = self.getQuandlURL(list, databaseName: dataSetName, companyCode: self.stockCode, startDate: initialDate, endDate: json["dataset"]!!["newest_available_date"] as! String)
+                            let newTask = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
                                 do {
                                     json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                                     stockData = (json["dataset"]!!["data"] as! Array<NSArray>).reverse()
@@ -172,6 +171,17 @@ class StockContentViewController: UIViewController, BEMSimpleLineGraphDataSource
         dateFormatter.dateFormat = "d MMMM yyyy"
         
         return dateFormatter.stringFromDate(date!)
+    }
+    
+    func getQuandlURL(list: String, databaseName: String, companyCode: String, startDate: String, endDate: String) -> NSURL {
+        var url = NSURL()
+        if list == "listOfMutualFunds" {
+            url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(databaseName)/\("YAHOO/FUND_" + companyCode).json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")!
+        } else {
+            url = NSURL(string: "https://www.quandl.com/api/v3/datasets/\(databaseName)/\(companyCode).json?api_key=sk7mgFNuMAy9JxMi5r-f&start_date=\(startDate)&end_date=\(endDate)")!
+        }
+        
+        return url
     }
     
     func numberOfPointsInLineGraph(graph: BEMSimpleLineGraphView) -> Int {

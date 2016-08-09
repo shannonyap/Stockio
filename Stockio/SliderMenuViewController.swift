@@ -97,7 +97,7 @@ class SliderMenuViewController: UITableViewController {
                 self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
             } else {
                 let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("mainVC") as! MainViewController
-                mainVC.uid = uid
+                mainVC.initValues(uid, list: "listOfCompanyNamesAndCodes", dataSetName: "WIKI", watchlistName: "watchlist", financialType: "company", firebaseName: "companyName", firebaseCode: "companyCode")
                 self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: mainVC), withFullCloseAnimation: true, completion: nil)
             }
         } else if indexPath.row == 2 {
@@ -110,9 +110,9 @@ class SliderMenuViewController: UITableViewController {
             if title == "Mutual Funds" {
                 self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: nil)
             } else {
-                let mutualFundsVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("mutualFundsVC") as! MutualFundsViewController
-                mutualFundsVC.uid = uid
-                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: mutualFundsVC), withFullCloseAnimation: true, completion: nil)
+                let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("mainVC") as! MainViewController
+                mainVC.initValues(uid, list: "listOfMutualFunds", dataSetName: "", watchlistName: "Mutual Funds List", financialType: "Mutual Fund", firebaseName: "indexName", firebaseCode: "indexCode")
+                self.evo_drawerController?.setCenterViewController(UINavigationController(rootViewController: mainVC), withFullCloseAnimation: true, completion: nil)
             }
         } else if indexPath.row == tableView.numberOfRowsInSection(0) - 1 {
             self.evo_drawerController?.toggleDrawerSide(.Left, animated: true, completion: { (true) in

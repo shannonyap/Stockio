@@ -316,7 +316,7 @@ class LoginViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDeleg
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let mainVC = storyboard.instantiateViewControllerWithIdentifier("mainVC") as! MainViewController
-        mainVC.uid = uid
+        mainVC.initValues(uid, list: "listOfCompanyNamesAndCodes", dataSetName: "WIKI", watchlistName: "watchlist", financialType: "company", firebaseName: "companyName", firebaseCode: "companyCode")
         
         let centerNav = UINavigationController(rootViewController: mainVC)
         centerNav.navigationBar.barTintColor = UIColor.whiteColor()
