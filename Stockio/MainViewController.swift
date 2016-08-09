@@ -91,7 +91,7 @@ extension UITableViewDelegate {
                             let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
                             
                             dispatch_async(dispatch_get_main_queue()) {
-                                self.updateFiveDayStockDataAndDatesInDB(json["dataset"]!!["data"]!![0][4] as! Float, previousClosePrice: json["dataset"]!!["data"]!![1][4] as! Float, priceChangeStatus: priceChangeStatus, list: list, companyKeyCode: companyKeyCode, latestDate: json["dataset"]!!["data"]!![0][0] as! String, graphData: self.populateWithGraphDataValues(json["dataset"]!!["data"] as! Array<NSArray>))
+                                self.updateFiveDayStockDataAndDatesInDB((((json["dataset"] as! Dictionary<String, AnyObject>)["data"] as! NSArray)[0] as! NSArray)[4] as! Float, previousClosePrice: (((json["dataset"] as! Dictionary<String, AnyObject>)["data"] as! NSArray)[1] as! NSArray)[4] as! Float, priceChangeStatus: priceChangeStatus, list: list, companyKeyCode: companyKeyCode, latestDate: (((json["dataset"] as! Dictionary<String, AnyObject>)["data"] as! NSArray)[0] as! NSArray)[0] as! String, graphData: self.populateWithGraphDataValues(json["dataset"]!!["data"] as! Array<NSArray>))
                                 completion(result: priceChangeStatus, data: self.populateWithGraphDataValues(json["dataset"]!!["data"] as! Array<NSArray>))
                             }
                             
@@ -102,7 +102,7 @@ extension UITableViewDelegate {
                     newTask.resume()
                 } else {
                     dispatch_async(dispatch_get_main_queue()) {
-                        self.updateFiveDayStockDataAndDatesInDB(json["dataset"]!!["data"]!![0][4] as! Float, previousClosePrice: json["dataset"]!!["data"]!![1][4] as! Float, priceChangeStatus: priceChangeStatus, list: list, companyKeyCode: companyKeyCode, latestDate: json["dataset"]!!["data"]!![0][0] as! String, graphData: self.populateWithGraphDataValues(json["dataset"]!!["data"] as! Array<NSArray>))
+                        self.updateFiveDayStockDataAndDatesInDB((((json["dataset"] as! Dictionary<String, AnyObject>)["data"] as! NSArray)[0] as! NSArray)[4] as! Float, previousClosePrice: (((json["dataset"] as! Dictionary<String, AnyObject>)["data"] as! NSArray)[1] as! NSArray)[4] as! Float, priceChangeStatus: priceChangeStatus, list: list, companyKeyCode: companyKeyCode, latestDate: (((json["dataset"] as! Dictionary<String, AnyObject>)["data"] as! NSArray)[0] as! NSArray)[0] as! String, graphData: self.populateWithGraphDataValues(json["dataset"]!!["data"] as! Array<NSArray>))
                         completion(result: priceChangeStatus, data: self.populateWithGraphDataValues(json["dataset"]!!["data"] as! Array<NSArray>))
                     }
                 }
