@@ -65,11 +65,13 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
                     if !self.addToWatchListButton.isDescendantOfView(self.view) {
                         self.addToWatchListButton = self.addButton( CGRect(x: 0, y: self.view.bounds.size.height * 1.1, width: self.view.bounds.size.width * 0.6, height: self.view.bounds.size.height * 0.055), type: "addToWatchList")
                     }
-                    UIView.animateWithDuration(0.7, delay: 0, options: .CurveEaseInOut, animations:  {
-                        self.addToWatchListButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
-                    Constants.firebaseRef.child("\(self.list)").observeEventType(.ChildAdded, withBlock: { snapshot in
-                        if snapshot.value!["\(self.firebaseName)"] as! String == chosenCompany {
-                            self.selectedCompany = [snapshot.value!["\(self.firebaseCode)"] as! String: ["\(self.firebaseName)": snapshot.value!["\(self.firebaseName)"] as! String, "\(self.firebaseCode)": snapshot.value!["\(self.firebaseCode)"] as! String]]
+                    Constants.firebaseRef.child("\(self.list)").observeSingleEventOfType(.Value, withBlock: { snapshot in
+                        for (_, value) in snapshot.value as! Dictionary<String, AnyObject> {
+                            if value["\(self.firebaseName)"] as! String == chosenCompany {
+                                self.selectedCompany = [value["\(self.firebaseCode)"] as! String: ["\(self.firebaseCode)": value["\(self.firebaseCode)"] as! String, "\(self.firebaseName)": value["\(self.firebaseName)"] as! String]]
+                                UIView.animateWithDuration(0.7, delay: 0, options: .CurveEaseInOut, animations:  {
+                                    self.addToWatchListButton.frame.origin.y = self.view.bounds.size.height * 0.85 }, completion: nil)
+                            }
                         }
                     })
                 } else {
@@ -143,7 +145,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     
     func getAllCompanyNames(completion: (companyNameList: [String]) -> Void) {
         Constants.firebaseRef.child("\(list)").observeSingleEventOfType(.Value, withBlock: { snapshot in
-            for (key, value) in snapshot.value as! Dictionary<String, AnyObject> {
+            for (_, value) in snapshot.value as! Dictionary<String, AnyObject> {
                 self.listOfCompanyNames.append(value["\(self.firebaseName)"] as! String)
             }
             completion(companyNameList: self.listOfCompanyNames)
