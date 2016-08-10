@@ -142,15 +142,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate {
     }
     
     func getAllCompanyNames(completion: (companyNameList: [String]) -> Void) {
-        var counter: UInt = 0
         Constants.firebaseRef.child("\(list)").observeSingleEventOfType(.Value, withBlock: { snapshot in
-            Constants.firebaseRef.child("\(self.list)").observeEventType(.ChildAdded, withBlock: { realSnapshot in
-                self.listOfCompanyNames.append(realSnapshot.value!["\(self.firebaseName)"] as! String)
-                counter += 1
-                if counter == snapshot.childrenCount  {
-                    completion(companyNameList: self.listOfCompanyNames)
-                }
-            })
+            for (key, value) in snapshot.value as! Dictionary<String, AnyObject> {
+                self.listOfCompanyNames.append(value["\(self.firebaseName)"] as! String)
+            }
+            completion(companyNameList: self.listOfCompanyNames)
         })
     }
 
