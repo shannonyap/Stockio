@@ -12,7 +12,8 @@ Powered by Firebase's NOSQL database, Stockio gives you all the financial data y
 - Google and Facebook Authentication API
 
 ## Screenshots
-![alt tag](https://github.com/shannonyap/Stockio/tree/master/Screenshots/Stockio1.png)
-![alt tag](https://github.com/shannonyap/Stockio/tree/master/Screenshots/Stockio2.png)
-![alt tag](https://github.com/shannonyap/Stockio/tree/master/Screenshots/Stockio3.png)
-![alt tag](https://github.com/shannonyap/Stockio/tree/master/Screenshots/Stockio4.png)
+<a href="url"><img src="https://github.com/shannonyap/Stockio/blob/master/Screenshots/Stockio1.png" height="568" width="320" ></a>
+<a href="url"><img src="https://github.com/shannonyap/Stockio/blob/master/Screenshots/Stockio2.png" height="568" width="320" ></a>
+
+<a href="url"><img src="https://github.com/shannonyap/Stockio/blob/master/Screenshots/Stockio3.png" height="568" width="320" ></a>
+<a href="url"><img src="https://github.com/shannonyap/Stockio/blob/master/Screenshots/Stockio4.png" height="568" width="320" ></a>
